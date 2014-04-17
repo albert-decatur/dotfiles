@@ -11,7 +11,3 @@ set hlsearch
 set ls=2
 map <C-N> :tabn <enter>
 map <C-P> :tabp <enter>
-
-":inoremap ( ()<Esc>i
-":inoremap { {}<Esc>i
-":inoremap [ []<Esc>i
