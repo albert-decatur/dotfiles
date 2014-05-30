@@ -26,6 +26,12 @@ alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
 
+# for editing crontab
+export EDITOR=vim
+
+# yEd graph editor
+alias yEd="/opt/yEd/yEd"
+
 # trim leading and trailing whitespace
 alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 
@@ -66,5 +72,11 @@ export find_ext
 
 # sum a column in awk.  don't use sci notation
 # not actually sure I need printf here
-function awksum { mawk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
+# uses STDIN
+function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
 export awksum
+
+# kill process using most memory
+# you could add this as a keyboard shortcut for when box freezes
+function kill_memhog { ps -e -o pid,vsz,comm= | sort -rn -k 2 | head -n 1 | awk '{print $1}' | xargs kill -9; }
+export kill_memhog
