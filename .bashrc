@@ -1,28 +1,34 @@
 # parallel is stupid
 alias parallel='parallel --gnu'
+
 # use mawk with tab delimiter for input
 alias tawk='mawk -F "\t"'
+
 # remove interal commas that cause delimiter collision in a CSV
 alias csvquote='mawk -f /usr/local/bin/csvquote.awk'
+
 # print numbered header of a TSV
 # NB: head is actually much faster than sed at taking the first line of large files
 alias nheader='head -n 1 | tr "\t" "\n" | nl'
+
 # print frequency of unique entries descending
 alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
-# bag of words
-alias bow="tr [:upper:] [:lower:] | tr '-' ' ' | tr \"'\" \" \" | tr -d [:punct:] | tr ' ' '\n' | sort | uniq"
+
 # copy stdout to clipboard
 alias clipboard="xclip -selection clip-board -i"
+
 # convert CSV to TSV
 alias csv2tsv="csvquote | sed 's:\t::g;s:,:\t:g'"
-# print name of most recently modified file in dir
-alias latest="ls -c | sed -n '1p' | sed 's:^:\":g;s:$:\":g'"
+
 # remove leading and trailing whitespace
 alias rmwhite="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
+
 # make a list of awk columns eg "$1" from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
+
 # start TileMill - need to use right version of node
 alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
+
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
 
@@ -77,6 +83,20 @@ function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
 export awksum
 
 # kill process using most memory
-# you could add this as a keyboard shortcut for when box freezes
+# add this as a keyboard shortcut for when box freezes
 function kill_memhog { ps -e -o pid,vsz,comm= | sort -rn -k 2 | head -n 1 | awk '{print $1}' | xargs kill -9; }
 export kill_memhog
+
+# mb-util from /opt/
+alias 'mb-util'='/opt/mbutil/mb-util'
+
+# weather-util - includes alerts
+alias weather='weather -a -z va/VAC095,va/VAC199'
+
+# print name of most recently modified file in dir
+function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
+export latest
+
+# subset pdf by page number
+# user args: 1) input pdf, 2) first page of subset, 3) last page of subset, 4) output pdf
+function pdf_subset { gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$2 -dLastPage=$3 -sOutputFile=$4 $1; }
