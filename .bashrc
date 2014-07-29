@@ -1,34 +1,27 @@
 # parallel is stupid
 alias parallel='parallel --gnu'
-
 # use mawk with tab delimiter for input
 alias tawk='mawk -F "\t"'
-
 # remove interal commas that cause delimiter collision in a CSV
 alias csvquote='mawk -f /usr/local/bin/csvquote.awk'
-
 # print numbered header of a TSV
 # NB: head is actually much faster than sed at taking the first line of large files
 alias nheader='head -n 1 | tr "\t" "\n" | nl'
-
 # print frequency of unique entries descending
 alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
-
+# bag of words
+# doesn't quite work yet
+alias bow="tr [:upper:] [:lower:] | tr '-' ' ' | tr \"'\" \" \" | tr -d [:punct:] | tr ' ' '\n' | sort | uniq"
 # copy stdout to clipboard
 alias clipboard="xclip -selection clip-board -i"
-
 # convert CSV to TSV
 alias csv2tsv="csvquote | sed 's:\t::g;s:,:\t:g'"
-
 # remove leading and trailing whitespace
 alias rmwhite="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
-
 # make a list of awk columns eg "$1" from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
-
 # start TileMill - need to use right version of node
 alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
-
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
 
@@ -100,3 +93,14 @@ export latest
 # subset pdf by page number
 # user args: 1) input pdf, 2) first page of subset, 3) last page of subset, 4) output pdf
 function pdf_subset { gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$2 -dLastPage=$3 -sOutputFile=$4 $1; }
+
+# use a two column TSV to run sed substitution.
+# all instances of column 1 (as words) will be replaced with column 2
+# ignores header
+function tsv_reclass { cat $1 | sed '1d' | awk -F'\t' '{OFS="\t";print "\\b"$1"\\b",$2}' | sed 's:\t:\::g;s:^:\::g;s:$:\::g;s:^:s:g;s:$:g:g' | tr '\n' ';' | sed 's:^:":g;s:$:":g;s:^:sed :g' | sed "s:$: $2:g"|sh ; }
+
+# URL encode
+function url_encode { perl -MURI::Escape -e 'print uri_escape($ARGV[0]); print "\n";' $1 ;}
+
+# URL unencode
+function url_unencode { perl -MURI::Escape -e 'print uri_unescape($ARGV[0]); print "\n";' $1 ;}
