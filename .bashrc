@@ -16,12 +16,12 @@ alias bow="tr [:upper:] [:lower:] | tr '-' ' ' | tr \"'\" \" \" | tr -d [:punct:
 alias clipboard="xclip -selection clip-board -i"
 # convert CSV to TSV
 alias csv2tsv="csvquote | sed 's:\t::g;s:,:\t:g'"
-# remove leading and trailing whitespace
-alias rmwhite="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # make a list of awk columns eg "$1" from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
-# start TileMill - need to use right version of node
-alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
+## start TileMill - need to use right version of node
+#alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
+# start tilemill
+alias tilemill="/opt/tilemill/index.js"
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
 
@@ -53,8 +53,8 @@ function diff_prep { csvquote.awk | parallel 'echo {} | tr "'$1'" "\n" | nl -ba 
 export diff_prep
 
 # get records from a txt that have text in columns beyond what they should have
-# user args: 1) input txt to check, 2) number of columns the file should have
-function cols_extra { incsv=$1; lastcol=$2; cols=$( seq 1 $lastcol | tr '\n' ',' | sed 's:,$::g' ); cut --complement -f $cols $incsv | sed 's:[ \t]\+::g' | nl -ba | mawk '{if($2 !~ /^$/)print $1}' | parallel 'sed -n {}p '$incsv'' ;}
+# user args: 1) input txt to check, 2) number of columns the file should have, 3) delimiter
+function cols_extra { incsv=$1; lastcol=$2; d=$3; cols=$( seq 1 $lastcol | tr '\n' ',' | sed 's:,$::g' ); cut --complement -d "$d" -f $cols $incsv | sed 's:[ \t]\+::g' | nl -ba | mawk '{if($2 !~ /^$/)print $1}' | parallel 'sed -n {}p '$incsv'' ;}
 export cols_extra
 
 # swap position of two columns in a TSV
@@ -104,3 +104,21 @@ function url_encode { perl -MURI::Escape -e 'print uri_escape($ARGV[0]); print "
 
 # URL unencode
 function url_unencode { perl -MURI::Escape -e 'print uri_unescape($ARGV[0]); print "\n";' $1 ;}
+
+# HTML encode
+# still getting 'wide character in print' message
+function html_encode { perl -Mutf8 -MHTML::Entities -ne 'print encode_entities($_)'; }
+
+# HTML decode
+# still getting 'wide character in print' message
+function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($_)'; }
+
+# return the count of non alpha / non digit characters sorted descending
+function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
+
+# round to nearest user arg decimal
+# eg 'cat foo.csv | round 0' to get whole numbers, and 'cat foo.csv | round 1' to round to first decimal place
+function round { awk "{printf \"%3.$1f\n\", \$1}"; }
+
+# path to double metaphone from https://github.com/slacy/double-metaphone
+alias double_metaphone='/opt/double-metaphone/dmtest'
