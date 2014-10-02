@@ -2,8 +2,6 @@
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input
 alias tawk='mawk -F "\t"'
-# remove interal commas that cause delimiter collision in a CSV
-alias csvquote='mawk -f /usr/local/bin/csvquote.awk'
 # print numbered header of a TSV
 # NB: head is actually much faster than sed at taking the first line of large files
 alias nheader='head -n 1 | tr "\t" "\n" | nl'
@@ -14,22 +12,16 @@ alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g
 alias bow="tr [:upper:] [:lower:] | tr '-' ' ' | tr \"'\" \" \" | tr -d [:punct:] | tr ' ' '\n' | sort | uniq"
 # copy stdout to clipboard
 alias clipboard="xclip -selection clip-board -i"
-# convert CSV to TSV
-alias csv2tsv="csvquote | sed 's:\t::g;s:,:\t:g'"
 # make a list of awk columns eg "$1" from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
+## start TileMill - need to use right version of node
+#alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
 # start tilemill
 alias tilemill="/opt/tilemill/index.js"
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
-
 # trim leading and trailing whitespace
 alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
-
-# convert xls(x)* to TSV
-# requires gnumeric's ssconvert
-function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator=" "' fd://0 fd://1; }
-export -f table2tsv
 
 # list oldest files over 1GB in current dir
 function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
@@ -119,3 +111,16 @@ export function libretsv
 
 # path to double metaphone from https://github.com/slacy/double-metaphone
 alias double_metaphone='/opt/double-metaphone/dmtest'
+
+# convert CSV to TSV - uses csvkit
+function csv2tsv { csvformat -T $1;}
+export csv2tsv
+
+# convert TSV to CSV - uses csvkit
+function tsv2csv { csvformat -t $1 ;}
+export tsv2csv
+
+# convert xls(x)* to TSV
+# requires gnumeric's ssconvert
+function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator=" "' fd://0 fd://1; }
+export -f table2tsv
