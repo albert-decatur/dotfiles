@@ -18,26 +18,18 @@ alias clipboard="xclip -selection clip-board -i"
 alias csv2tsv="csvquote | sed 's:\t::g;s:,:\t:g'"
 # make a list of awk columns eg "$1" from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
-## start TileMill - need to use right version of node
-#alias tilemill="n use v0.8.17 /usr/share/tilemill/index.js"
 # start tilemill
 alias tilemill="/opt/tilemill/index.js"
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
-
-# for editing crontab
-export EDITOR=vim
-
-# yEd graph editor
-alias yEd="/opt/yEd/yEd"
 
 # trim leading and trailing whitespace
 alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 
 # convert xls(x)* to TSV
 # requires gnumeric's ssconvert
-function xls2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator="	"' $1 fd://1; }
-export -f xls2tsv
+function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator=" "' fd://0 fd://1; }
+export -f table2tsv
 
 # list oldest files over 1GB in current dir
 function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
@@ -119,6 +111,11 @@ function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr
 # round to nearest user arg decimal
 # eg 'cat foo.csv | round 0' to get whole numbers, and 'cat foo.csv | round 1' to round to first decimal place
 function round { awk "{printf \"%3.$1f\n\", \$1}"; }
+
+# open TSV with libreoffice calc
+# libre is stupid
+function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice -calc $1; fi ;}
+export function libretsv
 
 # path to double metaphone from https://github.com/slacy/double-metaphone
 alias double_metaphone='/opt/double-metaphone/dmtest'
