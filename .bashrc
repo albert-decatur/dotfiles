@@ -4,7 +4,8 @@ alias parallel='parallel --gnu'
 alias tawk='mawk -F "\t"'
 # print numbered header of a TSV
 # NB: head is actually much faster than sed at taking the first line of large files
-alias nheader='head -n 1 | tr "\t" "\n" | nl'
+# also number blank lines - just in case
+alias nheader='head -n 1 | tr "\t" "\n" | nl -ba'
 # print frequency of unique entries descending
 alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
 # bag of words
@@ -20,8 +21,14 @@ alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
 alias tilemill="/opt/tilemill/index.js"
 # pipe IP addr to clipboard
 alias getip="ifconfig -a |grep inet | grep -oE 'inet addr:[0-9.]+' | sed -n '1p' | grep -oE '[0-9.]+' | clipboard"
+
 # trim leading and trailing whitespace
 alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
+
+# convert xls(x)* to TSV
+# requires gnumeric's ssconvert
+function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator="	"' fd://0 fd://1; }
+export -f table2tsv
 
 # list oldest files over 1GB in current dir
 function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
@@ -61,7 +68,7 @@ export awksum
 
 # kill process using most memory
 # add this as a keyboard shortcut for when box freezes
-function kill_memhog { ps -e -o pid,vsz,comm= | sort -rn -k 2 | head -n 1 | awk '{print $1}' | xargs kill -9; }
+function kill_memhog { ps -e -o pid,vsz,comm= | sort -rn -k 2 | head -n 1 | awk '{print $1}' | xargs sudo kill -9; }
 export kill_memhog
 
 # mb-util from /opt/
@@ -100,6 +107,12 @@ function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($
 # return the count of non alpha / non digit characters sorted descending
 function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
 
+# pipe file / text etc to this function to get a list of character encoding for each unique character
+# output is two column TSV: the chardet output and the input character
+# NB: this is character by character, and chardet sometimes guesses wrong this way - however, I'm less worried about comission than omission
+function detect_chars { sed 's:\(.\):\1\n:g' | awk '{ print tolower( $0 ) }' | sort | uniq | parallel 'encoding=$( chardet <( echo {} ) ); echo -e $encoding"\t"{}' ;}
+export detect_chars
+
 # round to nearest user arg decimal
 # eg 'cat foo.csv | round 0' to get whole numbers, and 'cat foo.csv | round 1' to round to first decimal place
 function round { awk "{printf \"%3.$1f\n\", \$1}"; }
@@ -120,7 +133,9 @@ export csv2tsv
 function tsv2csv { csvformat -t $1 ;}
 export tsv2csv
 
-# convert xls(x)* to TSV
-# requires gnumeric's ssconvert
-function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator=" "' fd://0 fd://1; }
-export -f table2tsv
+# write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
+# use double quoted list for table names
+# example use: cat <( join_multi_w_singleField "1 2 3 4" example_field ) | psql db
+# TODO: rename fields used to join according to the table they came from
+function join_multi_w_singleField { field=$2; tables=( $1 ); num_elements=$( expr ${#tables[@]} - 1 ); for n in $(seq 0 $num_elements); do if [[ $n -eq $num_elements ]]; then false; elif [[ $n -eq 0 ]]; then echo "\"${tables[$n]}\" full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; else echo "full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; fi; done | tr '\n' ' ' | sed 's:^:select * from :g' ;}
+export join_multi_w_singleField
