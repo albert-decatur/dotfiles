@@ -1,7 +1,9 @@
 # parallel is stupid
 alias parallel='parallel --gnu'
-# use mawk with tab delimiter for input
-alias tawk='mawk -F "\t"'
+# use mawk with tab delimiter for input and output
+alias tawk='mawk -F "\t" -v OFS="\t"'
+# use makw with pipe delimiter for input and output
+alias pawk='mawk -F "|" -v OFS="|"'
 # print numbered header of a TSV
 # NB: head is actually much faster than sed at taking the first line of large files
 # also number blank lines - just in case
@@ -131,13 +133,9 @@ export function libretsv
 # path to double metaphone from https://github.com/slacy/double-metaphone
 alias double_metaphone='/opt/double-metaphone/dmtest'
 
-# convert CSV to TSV - uses csvkit
-function csv2tsv { csvformat -T $1;}
-export csv2tsv
-
-# convert TSV to CSV - uses csvkit
-function tsv2csv { csvformat -t $1 ;}
-export tsv2csv
+# convert TSV to CSV - uses csvkit, assumes input is TSV
+function table2csv { csvformat -t $1;}
+export table2csv
 
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
