@@ -5,9 +5,12 @@ alias tawk='mawk -F "\t" -v OFS="\t"'
 # use makw with pipe delimiter for input and output
 alias pawk='mawk -F "|" -v OFS="|"'
 # print numbered header of a TSV
+alias theader="head -n 1 | tr '\t' '\n' | nl -ba | trim"
 # NB: head is actually much faster than sed at taking the first line of large files
 # also number blank lines - just in case
-alias nheader='head -n 1 | tr "\t" "\n" | nl -ba'
+# relies on trim alias
+# print numbered header of a CSV
+alias cheader="head -n 1 | tr ',' '\n' | nl -ba | trim"
 # print frequency of unique entries descending
 alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
 # bag of words
@@ -134,7 +137,9 @@ export function libretsv
 alias double_metaphone='/opt/double-metaphone/dmtest'
 
 # convert TSV to CSV - uses csvkit, assumes input is TSV
-function table2csv { csvformat -t $1;}
+# also assumes max field size of no more than 1m characters
+# ssconvert does not have these limit flags but it much slower
+function table2csv { csvformat -t -z 1000000 $1;}
 export table2csv
 
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
