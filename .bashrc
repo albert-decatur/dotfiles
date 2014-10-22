@@ -1,3 +1,12 @@
+# set vim as default editor
+export EDITOR=vim
+# vim style keybindings for bash
+set -o vi
+
+# use pygmentize with the pager less to give color
+# makes it a little sticky to do 'less foo' but really nice to do 'cat foo | less'
+# I typically cat a file first because you never know what commands you may want to swap out later
+alias less='pygmentize | less -r'
 # GNU parallel is stupid
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
