@@ -2,11 +2,24 @@
 export EDITOR=vim
 # vim style keybindings for bash
 set -o vi
+# use pygmentize when running 'less foo' but not 'cat foo | pygmentize | less -r', which gets messed up
+export LESSOPEN='|pygmentize %s'
 
-# use pygmentize with the pager less to give color
-# makes it a little sticky to do 'less foo' but really nice to do 'cat foo | less'
-# I typically cat a file first because you never know what commands you may want to swap out later
-alias less='pygmentize | less -r'
+# print name of most recently modified file in dir
+function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
+export latest
+# list oldest files over 1GB in current dir
+function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
+export listold
+# copy stdout to clipboard
+alias clipboard="xclip -selection clip-board -i"
+# subset pdf by page number
+# user args: 1) input pdf, 2) hyphen separated page range, 3) output pdf
+# example use pdf_subset in.pdf 1-10 out.pdf
+function pdf_subset { pdftk A=$1 cat A$2 output $3; }
+# cat TSV to this and output github flavored markdown table
+function tsv2githubmd { in=$(cat); col_count=$(echo "$in" | awk -F'\t' '{print NF}' | sed -n '1p' ); second_line=$( yes -- --- | head -n $col_count | tr '\n' '|' | sed 's:|$::g' ); echo "$in" | sed "1 a\\$second_line" | sed 's:\t:|:g'; };
+export tsv2githubmd
 # GNU parallel is stupid
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
@@ -17,14 +30,6 @@ alias pawk='mawk -F "|" -v OFS="|"'
 alias theader="head -n 1 | tr '\t' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # print numbered header of a CSV
 alias cheader="head -n 1 | tr ',' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
-# print frequency of unique entries descending
-alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
-# copy stdout to clipboard
-alias clipboard="xclip -selection clip-board -i"
-# make a string for awk-style column printing ( eg "$1,$2" ) from a list of numbers
-alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
-# trim leading and trailing whitespace
-alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # convert Gnumeric-recognized tables to TSV
 # more generic than csvformat from csvkit but slower
 # requires gnumeric's ssconvert
@@ -35,45 +40,43 @@ export -f table2tsv
 # ssconvert does not have these limit flags but it much slower
 function table2csv { csvformat -t -z 1000000 $1;}
 export table2csv
-# list oldest files over 1GB in current dir
-function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
-export listold
-# list all tables and fields in a psql db, tables in left col and their fields in right col, tab separated
-function psql_listcols { echo "\d" | psql -d $1 | mawk -F'|' '{print $2}' | sed '1,3d' | grep -vE "^$" | parallel 'echo copy \(select \* from {} limit 0\) to stdout\ with csv header\; | psql -d '$1' | tr "," "\n" | sed "s:^:{}:g" | sed "s:^[ \t]\+::g;s:[ \t]\+$::g;s:[ \t]\+:\t:g"'; }
-export psql_listcols
-# prep to compare records field by field by translating their delimiters to newline and splitting them into individual files.  user must supply delimiter for tr, eg "," or "\t". typical use is to grep then pipe to this
-# eg "grep -F '104665655' foo.csv | diff_prep , ; wdiff xx*"
-function diff_prep { csvquote.awk | parallel 'echo {} | tr "'$1'" "\n" | nl -ba | sed "s:^[ \t]\+::g;s:[ \t]\+$::g" | sed "/^\$/d;\$G"' | sed '$d' | csplit - -s -z /^$/ {*}; }
-export diff_prep
+# print frequency of unique entries descending
+alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
+# return the count of non alpha / non digit characters sorted descending
+function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
+# trim leading and trailing whitespace
+alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
+# round to nearest user arg decimal
+# eg 'cat foo.csv | round 0' to get whole numbers, and 'cat foo.csv | round 1' to round to first decimal place
+function round { awk "{printf \"%3.$1f\n\", \$1}"; }
+# sum a column in awk.  don't use sci notation
+# uses STDIN
+function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
+export awksum
 # get records from a txt that have text in columns beyond what they should have
 # user args: 1) input txt to check, 2) number of columns the file should have, 3) delimiter
-function cols_extra { incsv=$1; lastcol=$2; d=$3; cols=$( seq 1 $lastcol | tr '\n' ',' | sed 's:,$::g' ); cut --complement -d "$d" -f $cols $incsv | sed 's:[ \t]\+::g' | nl -ba | mawk '{if($2 !~ /^$/)print $1}' | parallel 'sed -n {}p '$incsv'' ;}
-export cols_extra
+function col_extra { incsv=$1; lastcol=$2; d=$3; cols=$( seq 1 $lastcol | tr '\n' ',' | sed 's:,$::g' ); cut --complement -d "$d" -f $cols $incsv | sed 's:[ \t]\+::g' | nl -ba | mawk '{if($2 !~ /^$/)print $1}' | parallel 'sed -n {}p '$incsv'' ;}
+export col_extra
 # swap position of two columns in a TSV
 # user args: 1) first col, 2) second col
 # input TSV comes from stdin
-function cols_swap { mawk -F'\t' " { OFS=\"\t\"; t = \$${1}; \$${1} = \$${2}; \$${2} = t; print; } "; }
-export cols_swap
+function col_swap { mawk -F'\t' " { OFS=\"\t\"; t = \$${1}; \$${1} = \$${2}; \$${2} = t; print; } "; }
+export col_swap
+# sort a TSV according to column names, using an arbitrary sort flag, eg -d or -n
+# example use: col_sort -n in.tsv
+# NB: relies on table2tsv, csvjoin, mawk
+function col_sort { intsv=$2; cols_order=$( cat $intsv | head -n 1 | tr "\t" "\n" | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_sorted=$( echo "$cols_order" | mawk -F'\t' '{print $2}'|sort $1 | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_order=$( echo -e "col_num\tcol_name\n$cols_order"); cols_sorted=$( echo -e "col_num_new\tcol_name\n$cols_sorted" ); awk_print_order=$( csvjoin -t -c2,2 <( echo "$cols_order" ) <( echo "$cols_sorted" )|cut -d, --complement -f2,4|table2tsv |sort -k2,2 -n|cut -f1|sed '1d'|sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'); awk -F"\t" "{OFS=\"\t\";print $awk_print_order}" $intsv; };
+export col_sort
+# make a string for awk-style column printing ( eg "$1,$2" ) from a list of numbers
+alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
+# list all tables and fields in a psql db, tables in left col and their fields in right col, tab separated
+function psql_listcols { echo "\d" | psql -d $1 | mawk -F'|' '{print $2}' | sed '1,3d' | grep -vE "^$" | parallel 'echo copy \(select \* from {} limit 0\) to stdout\ with csv header\; | psql -d '$1' | tr "," "\n" | sed "s:^:{}:g" | sed "s:^[ \t]\+::g;s:[ \t]\+$::g;s:[ \t]\+:\t:g"'; }
+export psql_listcols
 # find all files in working dir with a given extension
 # essentially recursive "ls *.foo"
 # example use: find_ext shp
 function find_ext { find . -type f -iregex ".*[.]$1$"; }
 export find_ext
-# sum a column in awk.  don't use sci notation
-# not actually sure I need printf here
-# uses STDIN
-function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
-export awksum
-# print name of most recently modified file in dir
-function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
-export latest
-# subset pdf by page number
-# user args: 1) input pdf, 2) first page of subset, 3) last page of subset, 4) output pdf
-function pdf_subset { gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$2 -dLastPage=$3 -sOutputFile=$4 $1; }
-# use a two column TSV to run sed substitution.
-# all instances of column 1 (as words) will be replaced with column 2
-# ignores header
-function tsv_reclass { cat $1 | sed '1d' | awk -F'\t' '{OFS="\t";print "\\b"$1"\\b",$2}' | sed 's:\t:\::g;s:^:\::g;s:$:\::g;s:^:s:g;s:$:g:g' | tr '\n' ';' | sed 's:^:":g;s:$:":g;s:^:sed :g' | sed "s:$: $2:g"|sh ; }
 # URL encode
 function url_encode { perl -MURI::Escape -e 'print uri_escape($ARGV[0]); print "\n";' $1 ;}
 # URL unencode
@@ -84,36 +87,17 @@ function html_encode { perl -Mutf8 -MHTML::Entities -ne 'print encode_entities($
 # HTML decode
 # still getting 'wide character in print' message
 function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($_)'; }
-# return the count of non alpha / non digit characters sorted descending
-function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
-# pipe file / text etc to this function to get a list of character encoding for each unique character
-# output is two column TSV: the chardet output and the input character
-# NB: this is character by character, and chardet sometimes guesses wrong this way - however, I'm less worried about comission than omission
-function detect_chars { sed 's:\(.\):\1\n:g' | awk '{ print tolower( $0 ) }' | sort | uniq | parallel 'encoding=$( chardet <( echo {} ) ); echo -e $encoding"\t"{}' ;}
-export detect_chars
-# round to nearest user arg decimal
-# eg 'cat foo.csv | round 0' to get whole numbers, and 'cat foo.csv | round 1' to round to first decimal place
-function round { awk "{printf \"%3.$1f\n\", \$1}"; }
 # open TSV with libreoffice calc
 # libre is stupid
-function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice -calc $1; fi ;}
+function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice --calc $1; fi ;}
 export function libretsv
+# use GNUplot to plot a single column of values, inspired by jeroenjanssens
+# assumed a header, sorts numeric ascending
+function dumbplot { sed '1d' | sort -n | nl | gnuplot -e 'set term dumb; set datafile separator "\t"; plot "-"' ;}
+export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
 # example use: cat <( join_multi_w_singleField "1 2 3 4" example_field ) | psql db
 # TODO: rename fields used to join according to the table they came from
 function join_multi_w_singleField { field=$2; tables=( $1 ); num_elements=$( expr ${#tables[@]} - 1 ); for n in $(seq 0 $num_elements); do if [[ $n -eq $num_elements ]]; then false; elif [[ $n -eq 0 ]]; then echo "\"${tables[$n]}\" full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; else echo "full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; fi; done | tr '\n' ' ' | sed 's:^:select * from :g' ;}
 export join_multi_w_singleField
-# sort a TSV according to column names, using an arbitrary sort flag, eg -d or -n
-# example use: col_sort -n in.tsv
-# NB: relies on table2tsv, csvjoin, mawk
-function col_sort { intsv=$2; cols_order=$( cat $intsv | head -n 1 | tr "\t" "\n" | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_sorted=$( echo "$cols_order" | mawk -F'\t' '{print $2}'|sort $1 | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_order=$( echo -e "col_num\tcol_name\n$cols_order"); cols_sorted=$( echo -e "col_num_new\tcol_name\n$cols_sorted" ); awk_print_order=$( csvjoin -t -c2,2 <( echo "$cols_order" ) <( echo "$cols_sorted" )|cut -d, --complement -f2,4|table2tsv |sort -k2,2 -n|cut -f1|sed '1d'|sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'); awk -F"\t" "{OFS=\"\t\";print $awk_print_order}" $intsv; };
-export col_sort
-# use GNUplot to plot a single column of values, inspired by jeroenjanssens
-# assumed a header, sorts numeric ascending
-function dumbplot { sed '1d' | sort -n | nl | gnuplot -e 'set term dumb; set datafile separator "\t"; plot "-"' ;}
-export dumbplot
-# cat TSV to this and output github flavored markdown table
-# unintentionally demonstrates capturing stdin to a variable in a function not written with stdin in mind
-function tsv2githubmd { in=$(cat); col_count=$(echo "$in" | awk -F'\t' '{print NF}' | sed -n '1p' ); second_line=$( yes -- --- | head -n $col_count | tr '\n' '|' | sed 's:|$::g' ); echo "$in" | sed "1 a\\$second_line" | sed 's:\t:|:g'; };
-export tsv2githubmd
