@@ -7,8 +7,8 @@ My ~/.bashrc and others.
 alias or function|purpose
 ---|---
 parallel|make parallel behave like GNU parallel every time
-tawk|take in TSV and output TSV
-pawk|take in pipe separated and output pipe separated
+tawk|make awk take in TSV and output TSV
+pawk|make awk take in pipe separated and output pipe separated
 theader|print numbered TSV header
 cheader|print numbered CSV header
 sortfreq|print counts of unique values descending
