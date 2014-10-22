@@ -1,3 +1,6 @@
+set -o vi
+EDITOR=vim
+
 # GNU parallel is stupid
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
