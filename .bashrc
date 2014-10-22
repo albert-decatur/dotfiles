@@ -1,5 +1,5 @@
 set -o vi
-EDITOR=vim
+export EDITOR=vim
 
 # GNU parallel is stupid
 alias parallel='parallel --gnu'
