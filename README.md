@@ -13,8 +13,8 @@ clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 tsv2githubmd|cat foo.tsv \| tsv2githubmd |print a TSV as a GitHub flavored markdown table|
 parallel|cat foo \| parallel 'echo {}'|make parallel behave like GNU parallel every time|[parallel](http://www.gnu.org/software/parallel/)
-tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4 }'|[mawk](http://invisible-island.net/mawk/)
-pawk|make awk take in pipe separated and output pipe separated|cat foo.txt \| pawk '{ print $4 }'|[mawk](http://invisible-island.net/mawk/)
+tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
+pawk|make awk take in pipe separated and output pipe separated|cat foo.txt \| pawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 theader|print numbered TSV header|cat foo.tsv \| theader|
 cheader|print numbered CSV header|cat foo.csv \| cheader|
 table2tsv|convert any Gnumeric compatible table to TSV|cat foo.csv \| table2tsv|[Gnumeric](http://www.gnumeric.org/)
