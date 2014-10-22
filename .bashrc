@@ -104,3 +104,7 @@ export col_sort
 # assumed a header, sorts numeric ascending
 function dumbplot { sed '1d' | sort -n | nl | gnuplot -e 'set term dumb; set datafile separator "\t"; plot "-"' ;}
 export dumbplot
+# cat TSV to this and output github flavored markdown table
+# unintentionally demonstrates capturing stdin to a variable in a function not written with stdin in mind
+function tsv2githubmd { in=$(cat); col_count=$(echo "$in" | awk -F'\t' '{print NF}' | sed -n '1p' ); second_line=$( yes -- --- | head -n $col_count | tr '\n' '|' | sed 's:|$::g' ); echo "$in" | sed "1 a\\$second_line" | sed 's:\t:|:g'; };
+export tsv2githubmd
