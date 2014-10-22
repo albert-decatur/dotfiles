@@ -25,8 +25,8 @@ trim|remove leading and trailing whitespace|cat foo \| trim|
 round|round numeric field to the nearest n digits|cat foo \| round 2|
 awksum|sum a single numeric field|cat foo.tsv \| tawk '{ print $2 }' \| awksum|
 col_extra|print records that have content beyond expected number of fields for delimited text|col_extra foo.txt 12 "\|"|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
-col_swap|switch the position of two columns in delimited text|cat foo.tsv \| col_swap 3 4 \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/),[csvkit](https://csvkit.readthedocs.org),table2tsv
-col_sort|use UNIX sort flags (eg -n or -d) to reorder TSV fields|col_sort -n foo.tsv \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/),
+col_swap|switch the position of two columns in delimited text|cat foo.tsv \| col_swap 3 4 \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/)
+col_sort|use UNIX sort flags (eg -n or -d) to reorder TSV fields|col_sort -n foo.tsv \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/),[csvkit](https://csvkit.readthedocs.org),table2tsv
 awkcols|format a sequence of numbers as awk columns|cols=$(seq 15 1560 \| awkcols ); cat foo.tsv \| tawk "{ print $awkcols}" |
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 find_ext|find all files under current directory with a given extension|find_ext csv|
