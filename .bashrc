@@ -9,7 +9,7 @@ export LESSOPEN='|pygmentize %s'
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
 export latest
 # list oldest files over 1GB in current dir
-function listold { ls -c | tac | parallel -k 'du -b {} | mawk "{if(\$1 > 1073741824)print \$2}"'; }
+function listold { find . -size +1G -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
 export listold
 # copy stdout to clipboard
 alias clipboard="xclip -selection clip-board -i"
