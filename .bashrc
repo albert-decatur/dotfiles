@@ -101,3 +101,6 @@ export dumbplot
 # TODO: rename fields used to join according to the table they came from
 function join_multi_w_singleField { field=$2; tables=( $1 ); num_elements=$( expr ${#tables[@]} - 1 ); for n in $(seq 0 $num_elements); do if [[ $n -eq $num_elements ]]; then false; elif [[ $n -eq 0 ]]; then echo "\"${tables[$n]}\" full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; else echo "full outer join \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""; unset tables[$n]; fi; done | tr '\n' ' ' | sed 's:^:select * from :g' ;}
 export join_multi_w_singleField
+# get a count of unique entries in every field in a TSV
+function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo "$header" | tr '\t' '\n' | wc -l ); for field in $(seq 1 $nfields); do cat $intsv | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}; done; echo "$header"; paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g'); }
+export uniqvals
