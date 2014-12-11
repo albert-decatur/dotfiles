@@ -36,5 +36,5 @@ html_encode|HTML encode text|echo '&' \| html_encode|[HTML::Entities](http://sea
 html_decode|decode HTML encoded text|echo '&amp;' \| html_decode|[HTML::Entities](http://search.cpan.org/dist/HTML-Parser/lib/HTML/Entities.pm)
 libretsv|force LibreOffice to open TSV as a table|libretsv foo.tsv|[LibreOffice](http://www.libreoffice.org/)
 dumbplot|use GNUplot to graph a single numeric field|cat foo.tsv \| tawk '{ print $4 }' \| sed '1d' \| dumbplot |[gnuplot](http://www.gnuplot.info/download.html)
-join_multi_w_singleField|print the SQL to join an arbitrary number of tables on a given (identically named) field|join_multi_w_singleField "a b c d e f" project_id|[csvkit](https://csvkit.readthedocs.org)
+join_multi_w_singleField|print the SQL to join an arbitrary number of tables on a given (identically named) field|join_multi_w_singleField "a b c d e f" project_id db_name|[csvkit](https://csvkit.readthedocs.org)
 uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|uniqvals foo.tsv \| csvlook -t \| less |[mawk](http://invisible-island.net/mawk/)
