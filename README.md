@@ -41,4 +41,4 @@ dumbplot|use GNUplot to graph a single numeric field|cat foo.tsv \| tawk '{ prin
 join_multi_w_singleField|print the SQL to join an arbitrary number of tables on a given (identically named) field|join_multi_w_singleField "a b c d e f" project_id db_name|[csvkit](https://csvkit.readthedocs.org)
 uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|uniqvals foo.tsv \| csvlook -t \| less |[mawk](http://invisible-island.net/mawk/)
 killname|kill a process or processes by name - can be dangerous!|killname chrome|
-ngrams|get ngrams from a column, treating records are documents| ngrams <( cat foo.txt | pawk '{print $2}') 3 |
+ngrams|get ngrams from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
