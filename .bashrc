@@ -1,9 +1,9 @@
+# TODO: add history variables to save history across GNU screens
+
 # set vim as default editor
 export EDITOR=vim
 # vim style keybindings for bash
 set -o vi
-# use pygmentize when running 'less foo' but not 'cat foo | pygmentize | less -r', which gets messed up
-export LESSOPEN='|pygmentize %s'
 
 # print name of most recently modified file in dir
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
@@ -24,10 +24,14 @@ export tsv2githubmd
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
 alias tawk='mawk -F "\t" -v OFS="\t"'
-# use makw with pipe delimiter for input and output
+# use mawk with pipe delimiter for input and output
 alias pawk='mawk -F "|" -v OFS="|"'
+# use mawk with pipe delimiter for input and output
+alias cawk='mawk -F "," -v OFS=","'
 # print numbered header of a TSV
 alias theader="head -n 1 | tr '\t' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
+# print numbered header of a CSV
+alias pheader="head -n 1 | tr '|' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # print numbered header of a CSV
 alias cheader="head -n 1 | tr ',' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # convert Gnumeric-recognized tables to TSV
