@@ -15,7 +15,9 @@ tsv2githubmd|cat foo.tsv \| tsv2githubmd |print a TSV as a GitHub flavored markd
 parallel|cat foo \| parallel 'echo {}'|make parallel behave like GNU parallel every time|[parallel](http://www.gnu.org/software/parallel/)
 tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 pawk|make awk take in pipe separated and output pipe separated|cat foo.txt \| pawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
+cawk|make awk take in CSV and output CSV|cat foo.csv \| cawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 theader|print numbered TSV header|cat foo.tsv \| theader|
+pheader|print numbered pipe delimited txt header|cat foo.txt \| pheader|
 cheader|print numbered CSV header|cat foo.csv \| cheader|
 table2tsv|convert any Gnumeric compatible table to TSV|cat foo.csv \| table2tsv|[Gnumeric](http://www.gnumeric.org/)
 table2csv|convert any CSVKit compatible table to CSV|cat foo.tsv \| table2csv|[csvkit](https://csvkit.readthedocs.org)
