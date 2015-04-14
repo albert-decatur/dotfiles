@@ -111,3 +111,58 @@ export uniqvals
 # example killname chrome
 function killname { ps aux | grep $1 | awk '{print $2}' | xargs -I '{}' kill -9 {} ;}
 export killname
+# the following two functions create ngrams - length is chosen by the user
+# the first - rawgrams - provides a simplified word list, with no punctuation or standalone runs of numbers, all lowercase, breaks on whitespace
+# the second - ngrams - uses rawgrams to make a set of ngrams for the input doc
+# ngrams respects newlines as doc breaks - meaning it is meant for columns of text where each record is considered a doc
+# it also requires that user specified gram length be respected, meaning that partial ngrams will be ignored
+# some quirky stuff - it considers punctuation to be the start of a new term, except for apostrophes which it ignores - this is because of english possessive
+# example use to find trigrams by frequency from the second column of a TSV, ignoring header: ngrams <( cat foo.tsv | tawk '{ print $2 }' | sed '1d' ) 3 | sortfreq
+function rawgrams { 
+	# remove apostrophes because of english possessive
+	tr -d "'" |\
+	# convert punctuation to whitespace - this breaks new terms on punctuation
+	tr '[:punct:]' ' ' |\
+	# convert newline to colon - remember, there are no colons now that we removed punct
+	tr '\n' ':' |\
+	# convert colons to ' : ' - we provide the whitespace so they will be considered terms
+	# this helps us split "documents" on newline
+	sed 's:\:: \: :g' |\
+	# convert whitespace to newline
+	# this determines what is counted as a term
+	tr ' ' '\n' |\
+	# remove totally blank records
+	grep -vE "^$" |\
+	# remove records that are nothing but runs of numbers
+	# notice that we keep records that may contain numbers in their terms, for example '1st'
+	grep -vE "^[0-9]+$" |\
+	# convert all terms to lowercase
+	awk '{ print tolower($0) }'
+}
+function ngrams { 
+	# use the rawgrams function on the first user arg to get terms
+	raw=$( cat $1 | rawgrams )
+	# for every integer "n" between 1 and the user specified number of terms for the ngram,
+	# remove the first "n-1" terms and write to file ( note that writing to static filenames prevents using this in parallel ).
+	# then these files are pasted together.
+	# note that no terms are ignored for the first pass because the first term must be included!
+	paste $( 
+		for n in $( seq 1 $2 )
+			do 
+				if [[ $n > 1 ]]; then 
+					d=$(($n-1))
+					echo "$raw" |\
+					sed "1,${d}d" > /tmp/$n
+				else 
+					echo "$raw" > /tmp/$n
+				fi
+				echo /tmp/$n
+			done
+	) |\
+	# remove standalone colons - these were our standins for newline so we could consider newline a separator for new docs
+	grep -oE "[^:]+" |\
+	# remove tabs with no term next to them - this is to clean up after ngrams that were partly composed of ' : '
+	sed 's:^\t::g;s:\t$::g;s:\t\+:\t:g' |\
+	# enforce the user input gram term count - before this the ngrams could be shorter than user specification if the document was too short
+	awk -v gramlength=$2 '{ if ( NF == gramlength ) print $0 }'
+}
