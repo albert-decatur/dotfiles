@@ -1,17 +1,26 @@
-# TODO: add history variables to save history across GNU screens
-
 # set vim as default editor
 export EDITOR=vim
 # vim style keybindings for bash
 set -o vi
 
+# save bash history across terminal windows, especially good for GNU screen, tmux, etc
+# credit to http://unix.stackexchange.com/users/348/user348 from http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+# Avoid duplicates
+export HISTCONTROL=ignoredups:erasedups  
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
+# After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
 # print name of most recently modified file in dir
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
 export latest
-# list oldest files over 1GB in current dir
-function listold { find . -size +1G -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
+# list oldest files over *n* GB in current dir
+# note that GB count must be integer
+function listold { find . -size +$1G -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
 export listold
 # copy stdout to clipboard
+# like Mac's pbcopy
 alias clipboard="xclip -selection clip-board -i"
 # subset pdf by page number
 # user args: 1) input pdf, 2) hyphen separated page range, 3) output pdf
@@ -41,12 +50,13 @@ function table2tsv { ssconvert --export-type Gnumeric_stf:stf_assistant -O 'sepa
 export -f table2tsv
 # convert TSV to CSV - uses csvkit, assumes input is TSV
 # also assumes max field size of no more than 1m characters
-# ssconvert does not have these limit flags but it much slower
+# ssconvert does not have these limit flags but it is much slower
 function table2csv { csvformat -t -z 1000000 $1;}
 export table2csv
 # print frequency of unique entries descending
 alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
 # return the count of non alpha / non digit characters sorted descending
+# this only works well with English - should replace with UTF8 friendly funky_chars
 function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
 # trim leading and trailing whitespace
 alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
@@ -96,6 +106,7 @@ function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($
 function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice --calc $1; fi ;}
 export function libretsv
 # use GNUplot to plot a single column of values, inspired by jeroenjanssens
+# https://github.com/jeroenjanssens/data-science-at-the-command-line/blob/master/tools/dumbplot
 # assumed a header, sorts numeric ascending
 function dumbplot { sed '1d' | sort -n | nl | gnuplot -e 'set term dumb; set datafile separator "\t"; plot "-"' ;}
 export dumbplot
@@ -109,6 +120,7 @@ function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo 
 export uniqvals
 # kill processes by name - more than pkill!
 # example killname chrome
+# note danger of killing unexpected processes with matching names
 function killname { ps aux | grep $1 | awk '{print $2}' | xargs -I '{}' kill -9 {} ;}
 export killname
 # the following two functions create ngrams - length is chosen by the user
