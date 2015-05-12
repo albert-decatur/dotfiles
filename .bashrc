@@ -92,9 +92,9 @@ export psql_listcols
 function find_ext { find . -type f -iregex ".*[.]$1$"; }
 export find_ext
 # URL encode
-function url_encode { perl -MURI::Escape -e 'print uri_escape($ARGV[0]); print "\n";' "$1" ;}
+function url_encode { perl -MURI::Escape -e 'print uri_escape(<STDIN>); print "\n";';}
 # URL unencode
-function url_decode { perl -MURI::Escape -e 'print uri_unescape($ARGV[0]); print "\n";' "$1" ;}
+function url_decode { perl -MURI::Escape -e 'print uri_unescape(<STDIN>); print "\n";';}
 # HTML encode
 # still getting 'wide character in print' message
 function html_encode { perl -Mutf8 -MHTML::Entities -ne 'print encode_entities($_)'; }
