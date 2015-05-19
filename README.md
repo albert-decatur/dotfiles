@@ -8,7 +8,7 @@ My ~/.bashrc and others.
 alias or function|purpose|example|prerequisite
 ---|---|---|---
 latest|print the name of the most recently modified file in the current directory|latest|
-listold|list the oldest files over 1GB in current directory|listold|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
+listold|list the oldest files over *n* MB in current directory|listold 100|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge.net/projects/xclip/)
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 tsv2githubmd|cat foo.tsv \| tsv2githubmd |print a TSV as a GitHub flavored markdown table|

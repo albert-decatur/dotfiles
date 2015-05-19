@@ -15,9 +15,9 @@ export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; histor
 # print name of most recently modified file in dir
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
 export latest
-# list oldest files over *n* GB in current dir
-# note that GB count must be integer
-function listold { find . -size +$1G -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
+# list oldest files over *n* MB under current dir
+# note that MB count must be integer
+function listold { find . -size +$1M -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
 export listold
 # copy stdout to clipboard
 # like Mac's pbcopy
