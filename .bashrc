@@ -113,22 +113,9 @@ export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
 # example use: join_multi_w_singleField "1 2 3 4" example_id_field "full outer join" foo_db
-# NB: shared id field will show up over and over, but coalesced id field is prepended for full outer join convenience
-# TODO: do not repeat shared id fields when using inner join - not necessary
 function join_multi_w_singleField { 
 	field=$2
 	tables=( $1 )
-	# get SQL for a COALESCE of the id fields
-	# no needed for inner join
-	# but useful for outer join
-	COALESCE=$(
-		echo ${tables[@]} |\
-		tr ' ' '\n' |\
-		sed "s:$:.$2:g" |\
-		tr '\n' ',' |\
-		sed 's:,$::g' |\
-		sed 's:^:COALESCE(:g;s:$:):g'
-	)
 	# get the number of tables to join
 	num_elements=$( expr ${#tables[@]} - 1 )
 	for n in $(seq 0 $num_elements)
@@ -138,20 +125,19 @@ function join_multi_w_singleField {
 			false
 		# if the number of tables is not reached, join the current table to the next table using the user specified join type
 		elif [[ $n -eq 0 ]]; then 
-			echo "\"${tables[$n]}\" $3 \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""
+			echo "\"${tables[$n]}\" $3 \"${tables[$( expr $n + 1 )]}\" USING ($2)"
 			unset tables[$n]
 		else 
-			echo "$3 \"${tables[$( expr $n + 1 )]}\" on \"${tables[$n]}\".\"${field}\" = \"${tables[$( expr $n + 1 )]}\".\"${field}\""
+			echo "$3 \"${tables[$( expr $n + 1 )]}\" USING ($2)"
 			unset tables[$n]
 		fi
 	done |\
 	tr '\n' ' ' |\
 	# surround the join SQL with SQL for copying to stdout as tsv
-	sed "s:^:SELECT $COALESCE as $2,* FROM :g" |\
+	sed "s:^:SELECT * FROM :g" |\
 	sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g" |\
  	psql $4
 }
-export join_multi_w_singleField
 # get a count of unique entries in every field in a TSV
 function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo "$header" | tr '\t' '\n' | wc -l ); for field in $(seq 1 $nfields); do cat $intsv | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}; done; echo "$header"; paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g'); }
 export uniqvals
