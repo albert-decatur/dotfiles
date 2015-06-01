@@ -13,7 +13,7 @@ clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 tsv2githubmd|cat foo.tsv \| tsv2githubmd |print a TSV as a GitHub flavored markdown table|
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
-ngrams|get ngrams from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
+ngrams|get ngrams of length *n* from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
 join_multi_w_singleField|join an arbitrary number of postgres tables on a given (identically named) field|join_multi_w_singleField "a b c d e f" project_id "full outer join" db_name|postgreSQL
 tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 pawk|make awk take in pipe separated and output pipe separated|cat foo.txt \| pawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
