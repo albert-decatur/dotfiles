@@ -40,7 +40,7 @@ url_decode|decode URL encoded text|url_decode 'A%26P'|[URI::Escape](http://searc
 html_encode|HTML encode text|echo '&' \| html_encode|[HTML::Entities](http://search.cpan.org/dist/HTML-Parser/lib/HTML/Entities.pm)
 html_decode|decode HTML encoded text|echo '&amp;' \| html_decode|[HTML::Entities](http://search.cpan.org/dist/HTML-Parser/lib/HTML/Entities.pm)
 libretsv|force LibreOffice to open TSV as a table|libretsv foo.tsv|[LibreOffice](http://www.libreoffice.org/)
-dumbplot|use GNUplot to graph a single numeric field. credit goes to jeroenjanssens|cat foo.tsv \| tawk '{ print $4 }' \| sed '1d' \| dumbplot |[gnuplot](http://www.gnuplot.info/download.html)
+dumbplot|use GNUplot to graph one or two numeric fields in the terminal. removes header if found. assumes should graph points but can graphs lines| cat foo.tsv \| cut -f3,4 \| dumbplot OR cat foo.tsv \| cut -f4 \| dumbplot lines |[gnuplot](http://www.gnuplot.info/download.html)
 uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|uniqvals foo.tsv \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
 killname|kill a process or processes by name - can be dangerous!|killname chrome|
 parallel|cat foo \| parallel 'echo {}'|make parallel behave like GNU parallel every time|[parallel](http://www.gnu.org/software/parallel/)

@@ -105,11 +105,32 @@ function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($
 # libre is stupid
 function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice --calc $1; fi ;}
 export function libretsv
-# use GNUplot to plot a single column of values, inspired by jeroenjanssens
+# use GNUplot to plot one or two columns of values, inspired by jeroenjanssens
 # https://github.com/jeroenjanssens/data-science-at-the-command-line/blob/master/tools/dumbplot
-# note that if the user supplies one column GNU plot will apply line numbering - if the user supplies two columns they will be plotted against each other
-# NB: you may want to plot with different size, or lines or points instead of plot style linespoints
-function dumbplot { gnuplot -e 'set term dumb size 110 30; set datafile separator "\t"; plot "-" with linespoints' ;}
+# assumes tab separated, removes header if found, assumes plot type points unless user supplies argument
+# example: cat foo.tsv | cut -f3,4 | dumbplot
+# example: cat foo.tsv | cut -f3 | dumbplot lines
+function dumbplot { 
+	# hard coded plot size in characters - please change according to taste!
+	size="110 30"
+	# if user does not supply plot type, assumes points
+	if [[ -z $1 ]]; then 
+		plotType=points
+	else 
+		plotType=$1
+	fi
+	in=$(cat)
+	if [[ -n $( echo "$in" | head -n 1 | grep -vE "[0-9.-]+" ) ]]; then 
+		echo "$in" |\
+		# first line appears to be a header because it has characters other than numbers, hyphens, and periods. remove it.
+		sed '1d' |\
+		gnuplot -e "set term dumb size $size; set datafile separator \"\t\"; plot \"-\" with $plotType"
+	else 
+		# keep first line - does not appear to be a header
+		echo "$in" |\
+		gnuplot -e "set term dumb size $size; set datafile separator \"\t\"; plot \"-\" with $plotType"
+	fi
+}
 export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
