@@ -107,7 +107,9 @@ function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then li
 export function libretsv
 # use GNUplot to plot a single column of values, inspired by jeroenjanssens
 # https://github.com/jeroenjanssens/data-science-at-the-command-line/blob/master/tools/dumbplot
-function dumbplot { nl | gnuplot -e 'set term dumb; set datafile separator "\t"; plot "-"' ;}
+# note that if the user supplies one column GNU plot will apply line numbering - if the user supplies two columns they will be plotted against each other
+# NB: you may want to plot with different size, or lines or points instead of plot style linespoints
+function dumbplot { gnuplot -e 'set term dumb size 110 30; set datafile separator "\t"; plot "-" with linespoints' ;}
 export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
