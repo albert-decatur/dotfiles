@@ -13,7 +13,8 @@ samplekh|get a percent of random records but keep your header line!|cat foo.tsv 
 tsv2githubmd|cat foo.tsv \| tsv2githubmd |print a TSV as a GitHub flavored markdown table|
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 ngrams|get ngrams of length *n* from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
-join_multi_w_singleField|join an arbitrary number of postgres tables on a given (identically named) field|join_multi_w_singleField "a b c d e f" project_id "full outer join" db_name|postgreSQL
+joinmany_psql|join an arbitrary number of postgres tables on a given (identically named) field|joinmany_psql "a b c d e f" project_id "full outer join" db_name
+joinmany_csv|join an arbitrary number of CSVs on a given (identically named) field. Note that this cannot use OUTER or RIGHT joins b/c it relies on SQLite|joinmany_csv "/tmp/a /tmp/b /tmp/c /tmp/d /tmp/e /tmp/f" project_id inner tabs|[csv2sqlite.py](https://github.com/rgrp/csv2sqlite)
 tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 pawk|make awk take in pipe separated and output pipe separated|cat foo.txt \| pawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)
 cawk|make awk take in CSV and output CSV. NB: you usually want to use csvkit's csvcut for CSV.  delimiter collision is the norm|cat foo.csv \| cawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)

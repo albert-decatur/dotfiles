@@ -134,8 +134,8 @@ function dumbplot {
 export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
-# example use: join_multi_w_singleField "1 2 3 4" example_id_field "full outer join" foo_db
-function join_multi_w_singleField { 
+# example use: joinmany_psql "1 2 3 4" example_id_field "full outer join" foo_db
+function joinmany_psql { 
 	field=$2
 	tables=( $1 )
 	# get the number of tables to join
@@ -159,6 +159,63 @@ function join_multi_w_singleField {
 	sed "s:^:SELECT * FROM :g" |\
 	sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g" |\
  	psql $4
+}
+# write SQLite to join an arbitrary number of CSVs, given that they have a field of the same name to join on
+# NB: because SQLite lacks OUTER JOIN, this is not nearly as useful as joinmany_psql, though this uses CSVs directly which is convenient
+# user args: 1) double quoted list of CSVs to join, with full path, 2) id field all will join on, 3) join type (just LEFT or INNER for SQLite), 4) export type - csv or tabs
+# example use: join_multi_w_singleField "/tmp/1 /tmp/2 /tmp/3 /tmp/4" example_id_field left csv
+function joinmany_csv { 
+	field=$2
+	tables=( $1 )
+	# import each with rgrp's csv2sqlite.py
+	# use a sqlite db under tmp
+	# prefix "a_" to table names to allow for numeric table names
+	tmpdb=$(mktemp --suffix .sqlite)
+	# NB: csv2sqlite.py needs full path to input CSV
+	for n in "${tables[@]}"
+	do
+		csv2sqlite.py $n $tmpdb a_$(basename $n )
+	done
+	# change the tables array to use the new SQLite table names from the csv2sqlite.py import
+	tables=( 
+		$( 
+			echo "${tables[@]}" |\
+			tr ' ' '\n' |\
+			xargs -I '{}' basename {} |\
+			sed 's:^:a_:g' 
+		) 
+	)
+	# get the number of tables to join
+	num_elements=$( expr ${#tables[@]} - 1 )
+	# now print SQL to get all tables to join according to user specified join type, on user specified field
+	sqlite_string=$(
+		for n in $(seq 0 $num_elements)
+		do 
+			# if the number of tables is reached, do nothing
+			if [[ $n -eq $num_elements ]]; then 
+				false
+			# if the number of tables is not reached, join the current table to the next table using the user specified join type
+			elif [[ $n -eq 0 ]]; then 
+				echo "\"${tables[$n]}\" $3 JOIN \"${tables[$( expr $n + 1 )]}\" USING ($2)"
+				unset tables[$n]
+			else 
+				echo "$3 JOIN \"${tables[$( expr $n + 1 )]}\" USING ($2)"
+				unset tables[$n]
+			fi
+		done |\
+		tr '\n' ' ' |\
+		# surround the join SQL with SQL for copying to stdout as tsv
+		sed "s:^:SELECT * FROM :g;s:$:\;:g"
+	)
+	# make tmpsql file for commands to live
+	tmpsql=$(mktemp)
+	# use SQLite dialect for exporting as csv or tab, print header
+	echo -e ".mode $4\n.header on\n" > $tmpsql
+	echo "$sqlite_string" >> $tmpsql
+	# NB: not sure why, but saving to file and then pipe works but piping directly does not!
+	cat $tmpsql | sqlite3 $tmpdb
+	# cleanup tmp files
+	rm $tmpdb $tmpsql
 }
 # get a count of unique entries in every field in a TSV
 function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo "$header" | tr '\t' '\n' | wc -l ); for field in $(seq 1 $nfields); do cat $intsv | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}; done; echo "$header"; paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g'); }
