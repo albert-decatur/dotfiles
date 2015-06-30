@@ -223,3 +223,17 @@ function ngrams {
 	# enforce the user input gram term count - before this the ngrams could be shorter than user specification if the document was too short
 	awk -v gramlength=$2 '{ if ( NF == gramlength ) print $0 }'
 }
+# use bitly's sample.py from data_hacks to get n% of records randomly from STDIN, but keep the first record!
+function samplekh { 
+	# save whole input
+	in=$( cat )
+	# grab header
+	header=$( echo "$in" | head -n 1 )
+	echo "$in" |\
+	# remove header before sampling
+	sed '1d' |\
+	# use bitly's data_hacks sample.py! with user arg for prct
+	sample.py $1% 2>/dev/null |\
+	# slap header back on
+	sed "1 i$header"
+}
