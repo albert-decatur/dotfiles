@@ -160,6 +160,25 @@ function joinmany_psql {
 	sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g" |\
  	psql $4
 }
+# join arbitrary number of TSVs
+# first imports to psql with txt2pgsql.pl, then uses function joinmany_psql
+# user args same as joinmany_psql
+# NB: user must have postgre permissions to createdb and dropdb
+function joinmany_tsv {
+	# define list of TSVs
+	tsvs=( $1 )
+	# create a tmp pgsql db
+	tmpdb=$(mktemp)
+	createdb $tmpdb
+	# load up your list of TSVs into the tmpdb
+	for i in "${tsvs[@]}"
+	do
+		txt2pgsql.pl -i $i -d "\t" -t "TEXT" -p $tmpdb | sh &>/dev/null
+	done
+	# now run joinmany_psql!
+	joinmany_psql "$1" "$2" "$3" $4
+	dropdb $tmpdb
+}
 # write SQLite to join an arbitrary number of CSVs, given that they have a field of the same name to join on
 # NB: because SQLite lacks OUTER JOIN, this is not nearly as useful as joinmany_psql, though this uses CSVs directly which is convenient
 # user args: 1) double quoted list of CSVs to join, with full path, 2) id field all will join on, 3) join type (just LEFT or INNER for SQLite), 4) export type - csv or tabs
