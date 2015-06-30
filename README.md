@@ -1,11 +1,7 @@
 dotfiles
 ========
 
-My ~/.bashrc and others.
-You'll notice surfraw using the uzbl browser according to config file under .config.
-uzbl may actually be insecure, but it's a fun browser.
-
-.bashrc functions and aliases are as follows.
+Bash functions for data science.
 
 alias or function|purpose|example|prerequisite
 ---|---|---|---
