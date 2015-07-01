@@ -239,11 +239,6 @@ function joinmany_csv {
 # get a count of unique entries in every field in a TSV
 function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo "$header" | tr '\t' '\n' | wc -l ); for field in $(seq 1 $nfields); do cat $intsv | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}; done; echo "$header"; paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g'); }
 export uniqvals
-# kill processes by name - more than pkill!
-# example killname chrome
-# note danger of killing unexpected processes with matching names
-function killname { ps aux | grep $1 | awk '{print $2}' | xargs -I '{}' kill -9 {} ;}
-export killname
 # the following two functions create ngrams - length is chosen by the user
 # the first - rawgrams - provides a simplified word list, with no punctuation or standalone runs of numbers, all lowercase, breaks on whitespace
 # the second - ngrams - uses rawgrams to make a set of ngrams for the input doc

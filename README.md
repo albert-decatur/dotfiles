@@ -41,5 +41,4 @@ html_decode|decode HTML encoded text|echo '&amp;' \| html_decode|[HTML::Entities
 libretsv|force LibreOffice to open TSV as a table|libretsv foo.tsv|[LibreOffice](http://www.libreoffice.org/)
 dumbplot|use GNUplot to graph one or two numeric fields in the terminal. removes header if found. assumes should graph points but can graphs lines| cat foo.tsv \| cut -f3,4 \| dumbplot OR cat foo.tsv \| cut -f4 \| dumbplot lines |[gnuplot](http://www.gnuplot.info/download.html)
 uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|uniqvals foo.tsv \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
-killname|kill a process or processes by name - can be dangerous!|killname chrome|
 parallel|cat foo \| parallel 'echo {}'|make parallel behave like GNU parallel every time|[parallel](http://www.gnu.org/software/parallel/)
