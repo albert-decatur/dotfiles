@@ -54,7 +54,18 @@ export -f table2tsv
 function table2csv { csvformat -t -z 1000000 $1;}
 export table2csv
 # print frequency of unique entries descending
-alias sortfreq="sort | uniq -c | sort -k1 -rn | sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g'"
+# keeps header in place
+function sortfreq { 
+	in=$(cat)
+	header=$(echo "$in" | head -n 1)
+	echo "$in" |\
+	sed '1d' |\
+	sort |\
+	uniq -c |\
+	sort -k1 -rn |\
+ 	sed 's:^[ \t]\+::g;s:[ \t]\+$::g;s:^\([0-9]\+\) :\1\t:g' |\
+	sed "1 icount\t${header}"
+}
 # return the count of non alpha / non digit characters sorted descending
 # this only works well with English - should replace with UTF8 friendly funky_chars
 function funky_chars { sed 's:\(.\):\1\n:g' | sort | uniq -c | sort -k1 -rn | tr -d '[:alpha:]' | awk '{if($2 !~ /^$/ && $2 !~ /[0-9]/)print $0}' ;}
