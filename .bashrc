@@ -319,3 +319,18 @@ function samplekh {
 	# slap header back on
 	sed "1 i$header"
 }
+# function to make ID field - 1-based unique intergers, one per record
+function mkid { 
+	in=$(cat)
+	# saves header
+	header=$(echo "$in" | head -n 1)
+	echo "$in" |\
+	# removes header
+	sed '1d' |\
+	# NB: even numbers blank lines
+	nl -ba |\
+	# trims leading whitespace, inserts tab delimiter
+	sed 's:^\s\+::g;s:^\([0-9]\+\) :\1\t:g' |\
+	# adds back header
+	sed "1 iid\t${header}"
+}
