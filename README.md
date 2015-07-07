@@ -11,7 +11,7 @@ clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 samplekh|get a percent of random records but keep your header line!|cat foo.tsv \| tawk '{print $4,$5}' \| samplekh 3|bit.ly's [data_hacks](https://github.com/bitly/data_hacks)
 tsv2githubmd|print a TSV as a GitHub flavored markdown table|cat foo.tsv \|tsv2githubmd >> README.md|
-tsv2redis|get redis hashes from each record of a TSV|cat foo.tsv \| tsv2redis && echo "hgetall 1" | redis-cli --pipe|redis-server,redis-tools,moreutils
+tsv2redis|get redis hashes from each record of a TSV|cat foo.tsv \| tsv2redis && echo "hgetall 1" \| redis-cli --pipe|redis-server,redis-tools,moreutils
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 ngrams|get ngrams of length *n* from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
 joinmany_tsv|join an arbitrary number of TSVs on a given (identically named) field|joinmany_tsv "a b c d e f" project_id "full outer join" db_name|[txt2pgsql.pl](https://raw.githubusercontent.com/albert-decatur/aiddata-utils/master/etl/txt2pgsql.pl),postgreSQL
