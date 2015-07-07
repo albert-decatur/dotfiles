@@ -320,6 +320,7 @@ function samplekh {
 	sed "1 i$header"
 }
 # function to make ID field - 1-based unique intergers, one per record
+# hope no field is named "id"!
 function mkid { 
 	in=$(cat)
 	# saves header
@@ -333,4 +334,25 @@ function mkid {
 	sed 's:^\s\+::g;s:^\([0-9]\+\) :\1\t:g' |\
 	# adds back header
 	sed "1 iid\t${header}"
+}
+# convert every record in a TSV into a redis hash using the first field as the name
+# example use: cat foo.tsv | tsv2redis && echo "hgetall 1" | redis-cli --pipe
+function tsv2redis { 
+	in=$(cat)
+	# temp file for redis commands to go - not sure why but otherwise we get "Connection Reseted by Peer"
+	tmp=$(mktemp)
+	# get all the data without the first field - which is assumed to be the ID field
+	data=$(echo "$in" | cut -f1 --complement)
+	# get the ID field without the header
+	idfield=$( echo "$in" | cut -f1 | sed '1d' )
+	# get the header of every field but the ID field
+	header=$(echo "$data" | head -n 1 )
+	# get awk syntax to print the contents of $tohash
+	for_awk=$( echo "$header" | sed 's:\t:\n:g' | sed 's:^\|$:":g' | nl | trim | sed 's:^:\$:g' | tawk '{print $2,$1}' | tr '\t' ',' | tr '\n' ',' | sed 's:,$::g')
+	# print out the name of every header followed by its data - this is redis hash import style
+	tohash=$( echo "$data" | sed '1d' | tawk "{print $for_awk}" )
+	# write the redis style hash import, in the form 'hmset ID_VALUE FIELD1NAME FIELD1VALUE . . . '
+	paste <(echo "$idfield" | sed 's:^:hmset :g') <(echo "$tohash") > $tmp
+	# import the hashes to redis - uses default port!
+	cat $tmp | redis-cli --pipe
 }
