@@ -335,27 +335,45 @@ function mkid {
 	# adds back header
 	sed "1 iid\t${header}"
 }
-# convert every record in a TSV into a redis hash using the first field as the name
+# convert every record of a TSV into a redis hash using the first field as the hash name field
+# NB: may want to clean up quotes, definitely want an ID field
 # example use: cat foo.tsv | tsv2redis && echo "hgetall 1" | redis-cli --pipe
 function tsv2redis { 
 	in=$(cat)
-	# temp file for redis commands to go - not sure why but otherwise we get "Connection Reseted by Peer"
-	tmp=$(mktemp)
-	# get all the data without the first field - which is assumed to be the ID field
-	data=$(echo "$in" | cut -f1 --complement)
-	# get the ID field without the header
-	idfield=$( echo "$in" | cut -f1 | sed '1d' )
-	# get the header of every field but the ID field
-	header=$(echo "$data" | head -n 1 )
-	# get awk syntax to print the contents of $tohash
-	for_awk=$( echo "$header" | sed 's:\t:\n:g' | sed 's:^\|$:":g' | nl | trim | sed 's:^:\$:g' | tawk '{print $2,$1}' | tr '\t' ',' | tr '\n' ',' | sed 's:,$::g')
-	# print out the name of every header followed by its data - this is redis hash import style
-	tohash=$( echo "$data" | sed '1d' | tawk "{print $for_awk}" )
-	# write the redis style hash import, in the form 'hmset ID_VALUE FIELD1NAME FIELD1VALUE . . . '
-	paste <(echo "$idfield" | sed 's:^:hmset :g') <(echo "$tohash") > $tmp
-	# ensure that every lines end with CRLF not just LF
-	cat $tmp | awk '{ORS="\r\n";print $0}'
-	# import the hashes to redis - uses default port!
+	# get just the header
+	header=$(echo "$in" | head -n 1 )
+	# prepping for awk, get the name of every field followed by the field number
+	for_awk=$( 
+		echo "$header" |\
+	 	sed 's:\t:\n:g' |\
+		sed 's:^\|$:":g' |\
+		nl |\
+		trim |\
+		sed 's:^:\$:g' |\
+		tawk '{print $2,$1}' |\
+		tr '\t' ',' |\
+		tr '\n' ',' |\
+		sed 's:,$::g' |\
+		sed 's:"\+:":g'
+	)
+	# prints the field names, then their contents, for each record, eg "FirstName Janez LastName Novak"
+	toCountBytes=$( 
+		echo "$in" |\
+		sed '1d' |\
+		tawk "{print $for_awk}" 
+	)
+	# write Redis RESP bulk string
+	echo "$toCountBytes" |\
+	# for each element of the hash, count the number of bytes and prepend a $.
+	# except at the beginning we must specify number of elements and that we are defining a hash with HMSET 
+	# NB: LANG=C is needed for awk to use bytes for length() instead of characters
+	# RESP bulk strings take the form "*2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n"
+	LANG=C tawk '{OFS="\n"; print "*"NF,"$5","HMSET"; for(i=2;i<=NF;i++)print "$"length($i),$i}' |\
+	# append carriage return to end line
+	# NB: sed using forward slash delimiters allow for special whitespace characters!
+	sed 's/$/\r/' |\
+	# actually pipe to redis server - assumes default port
+	redis-cli --pipe
 }
 # sort TSV fields using UNIX sort options in double quotes - keeps header!
 # example sorting by field 2: cat foo.tsv | sortkh "-k2 -rn"
