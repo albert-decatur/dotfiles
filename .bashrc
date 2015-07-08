@@ -353,6 +353,28 @@ function tsv2redis {
 	tohash=$( echo "$data" | sed '1d' | tawk "{print $for_awk}" )
 	# write the redis style hash import, in the form 'hmset ID_VALUE FIELD1NAME FIELD1VALUE . . . '
 	paste <(echo "$idfield" | sed 's:^:hmset :g') <(echo "$tohash") > $tmp
+	# ensure that every lines end with CRLF not just LF
+	cat $tmp | awk '{ORS="\r\n";print $0}'
 	# import the hashes to redis - uses default port!
-	cat $tmp | redis-cli --pipe
+}
+# sort TSV fields using UNIX sort options in double quotes - keeps header!
+# example sorting by field 2: cat foo.tsv | sortkh "-k2 -rn"
+function sortkh { 
+	in=$(cat)
+	header=$(echo "$in" | head -n 1)
+	echo "$in" |\
+	sed '1d' |\
+	# sort with user options in double quotes
+	sort $1 |\
+	sed "1 i$header"
+}
+# use [Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line) to make a bar chart of TSV from STDIN - for example output of sortfreq
+# NB: prints PNG to STDOUT so may want to pipe to "feh -" or redirect to file
+# example use: cat foo.tsv | tawk '{print $2}' | sortfreq | sortkh "-k2 n" | plotbars year count "title" 20 | feh -
+function plotbars { 
+	x=$1
+	y=$2
+	titleText=$3
+	titleSize=$4
+	Rio -d'\t' -ge "df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\") + theme(plot.title=element_text(size=$titleSize))"
 }
