@@ -13,7 +13,7 @@ samplekh|get a percent of random records but keep your header line!|cat foo.tsv 
 sortkh|sort a TSV using UNIX sort options, keeping header in place|cat foo.tsv \| sortkh "-k2 -n"
 plotbars|use ggplot to plot fields from a TSV|cat foo.tsv \| tawk '{print $2}' \| sortfreq \| sortkh "-k2 n" \| plotbars year count "title" 20 \| feh - |ggplot2,[Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line)
 tsv2githubmd|print a TSV as a GitHub flavored markdown table|cat foo.tsv \|tsv2githubmd >> README.md|
-tsv2redis|get redis hashes from each record of a TSV|cat foo.tsv \| tsv2redis && echo "hgetall 1" \| redis-cli --pipe|redis-server,redis-tools,moreutils,tawk,trim,mawk
+tsv2redis|get redis hashes from each record of a TSV|cat foo.tsv \| tsv2redis && echo "hgetall 1" |redis-server,redis-tools,moreutils,tawk,trim,mawk
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 ngrams|get ngrams of length *n* from a column, treating records as documents| ngrams <( cat foo.txt \| pawk '{print $2}') 3 |
 joinmany_tsv|join an arbitrary number of TSVs on a given (identically named) field|joinmany_tsv "a b c d e f" project_id "full outer join" db_name|[txt2pgsql.pl](https://raw.githubusercontent.com/albert-decatur/aiddata-utils/master/etl/txt2pgsql.pl),postgreSQL
