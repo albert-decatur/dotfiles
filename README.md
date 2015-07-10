@@ -11,7 +11,7 @@ clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 samplekh|get a percent of random records but keep your header line!|cat foo.tsv \| tawk '{print $4,$5}' \| samplekh 3|bit.ly's [data_hacks](https://github.com/bitly/data_hacks)
 sortkh|sort a TSV using UNIX sort options, keeping header in place|cat foo.tsv \| sortkh "-k2 -n"
-plotbars|use ggplot to plot fields from a TSV|cat foo.tsv \| tawk '{print $2}' \| sortfreq \| sortkh "-k2 n" \| plotbars year count "title" 20 \| feh - |ggplot2,[Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line)
+plotbars|use ggplot make PNG bar graph of a TSV. high res an option!|cat foo.tsv \| tawk '{print $2}' \| sortfreq \| sortkh "-k2 n" \| plotbars year count "title" 20 \| feh - |ggplot2,[Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line)
 tsv2githubmd|print a TSV as a GitHub flavored markdown table|cat foo.tsv \|tsv2githubmd >> README.md|
 tsv2redis|get redis hashes from each record of a TSV|cat foo.tsv \| tsv2redis && echo "hgetall 1" |[redis-server](http://redis.io/),[redis-tools](http://redis.io/),GNU moreutils,tawk,trim,mawk
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
