@@ -396,3 +396,8 @@ function plotbars {
 	titleSize=$4
 	Rio -d'\t' -ge "df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\") + theme(plot.title=element_text(size=$titleSize))"
 }
+# quick cut
+# example to print 8th and 9th fields of a TSV: cat foo.tsv | c 8
+function c {
+	cut -f$1
+}
