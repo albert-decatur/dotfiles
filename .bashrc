@@ -393,6 +393,9 @@ function sortkh {
 function plotbars { 
 	x=$1
 	y=$2
+	# variable names lose spaces, any quotes must be escaped
+	x=$(echo "$x" | sed 's: :.:g;s:"::g')
+	y=$(echo "$y" | sed 's: :.:g;s:"::g')
 	titleText=$3
 	titleSize=$4
 	height=$5
