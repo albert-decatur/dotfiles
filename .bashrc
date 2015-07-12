@@ -177,7 +177,7 @@ function joinmany_psql {
 # join arbitrary number of TSVs or CSVs
 # first imports to psql with txt2pgsql.pl, then uses function joinmany_psql
 # NB: user must have postgre permissions to createdb and dropdb
-# NB: tsv mode causes too much quoting!
+# TODO: double quotes get quoted - just fix
 # NB: must be executed in same directory as input files - ouch
 # user args: 1) double quoted list of TSVs / CSVs, 2) name of field to join on, 3) 
 # example use: joinmany_csv "foo.csv bar.csv 1.csv" "example field" "full outer join" csv
