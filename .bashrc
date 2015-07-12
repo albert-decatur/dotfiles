@@ -149,6 +149,9 @@ export dumbplot
 function joinmany_psql { 
 	field=$2
 	tables=( $1 )
+	# for the benefit of joinmany_tsv, strip text after a period - hope table names don't have periods!
+	tables=$( echo "${tables[@]}" | tr ' ' '\n' | sed 's:[.][^.]*$::g' )
+	tables=($tables)
 	# get the number of tables to join
 	num_elements=$( expr ${#tables[@]} - 1 )
 	for n in $(seq 0 $num_elements)
@@ -158,10 +161,10 @@ function joinmany_psql {
 			false
 		# if the number of tables is not reached, join the current table to the next table using the user specified join type
 		elif [[ $n -eq 0 ]]; then 
-			echo "\"${tables[$n]}\" $3 \"${tables[$( expr $n + 1 )]}\" USING ($2)"
+			echo "\"${tables[$n]}\" $3 \"${tables[$( expr $n + 1 )]}\" USING (\"$2\")"
 			unset tables[$n]
 		else 
-			echo "$3 \"${tables[$( expr $n + 1 )]}\" USING ($2)"
+			echo "$3 \"${tables[$( expr $n + 1 )]}\" USING (\"$2\")"
 			unset tables[$n]
 		fi
 	done |\
@@ -171,23 +174,38 @@ function joinmany_psql {
 	sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g" |\
  	psql $4
 }
-# join arbitrary number of TSVs
+# join arbitrary number of TSVs or CSVs
 # first imports to psql with txt2pgsql.pl, then uses function joinmany_psql
-# user args same as joinmany_psql
 # NB: user must have postgre permissions to createdb and dropdb
-function joinmany_tsv {
+# NB: tsv mode causes too much quoting!
+# NB: must be executed in same directory as input files - ouch
+# user args: 1) double quoted list of TSVs / CSVs, 2) name of field to join on, 3) 
+# example use: joinmany_csv "foo.csv bar.csv 1.csv" "example field" "full outer join" csv
+function joinmany_csv {
 	# define list of TSVs
 	tsvs=( $1 )
 	# create a tmp pgsql db
 	tmpdb=$(mktemp)
 	createdb $tmpdb
 	# load up your list of TSVs into the tmpdb
+	# if there is a 4th user arg, check for "csv" or "tsv"
+	# if not, assume TSV
+	if [[ $# -ge 3 ]]; then
+		if [[ "$4" == "tsv" ]]; then
+			d="\t"
+		else
+			# if not tsv, assume csv
+			d=","
+		fi
+	else
+		d="\t"
+	fi
 	for i in "${tsvs[@]}"
 	do
-		txt2pgsql.pl -i $i -d "\t" -t "TEXT" -p $tmpdb | sh &>/dev/null
+		txt2pgsql.pl -i $i -d "$d" -t "TEXT" -p $tmpdb | sh &>/dev/null
 	done
 	# now run joinmany_psql!
-	joinmany_psql "$1" "$2" "$3" $4
+	joinmany_psql "$1" "$2" "$3" $tmpdb
 	dropdb $tmpdb
 }
 # write SQLite to join an arbitrary number of CSVs, given that they have a field of the same name to join on
