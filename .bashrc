@@ -192,13 +192,13 @@ function joinmany_csv {
 	# if not, assume TSV
 	if [[ $# -ge 3 ]]; then
 		if [[ "$4" == "tsv" ]]; then
-			d="\t"
-		else
-			# if not tsv, assume csv
 			d=","
+		else
+			# if not csv, assume tsv
+			d="\t"
 		fi
 	else
-		d="\t"
+		d=","
 	fi
 	for i in "${tsvs[@]}"
 	do
