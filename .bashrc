@@ -388,11 +388,15 @@ function sortkh {
 }
 # use [Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line) to make a bar chart of TSV from STDIN - for example output of sortfreq
 # NB: prints PNG to STDOUT so may want to pipe to "feh -" or redirect to file
-# example use: cat foo.tsv | tawk '{print $2}' | sortfreq | sortkh "-k2 n" | bargraph year count "title" 20 | feh -ZF -
-# high res example use: cat foo.tsv | tawk '{print $2}' | sortfreq | sortkh "-k2 n" | bargraph year count "title" 20 6 9 > foo.png
+# example use: cat foo.tsv | tawk '{print $2}' | sortfreq | bargraph year count "title" 20 | feh -ZF -
+# note that sortkh is used to get the lowest value on the top of the graph, which will flip when ggplot's coord_flip() is used
+# high res example use: cat foo.tsv | tawk '{print $2}' | sortfreq | sortkh "-k1 -n" | bargraph year count "title" 20 6 9 > foo.png
 function plotbars { 
 	x=$1
 	y=$2
+	# get vars for axis titles - keeps original text
+	x_axis_title=$1
+	y_axis_title=$2
 	# variable names lose spaces, any quotes must be escaped
 	x=$(echo "$x" | sed 's: :.:g;s:"::g')
 	y=$(echo "$y" | sed 's: :.:g;s:"::g')
@@ -403,12 +407,12 @@ function plotbars {
 	if [[ "$#" -lt 5 ]]; then 
 		# if only first user args are used, then 
 		# sets no res/dimensions - smaller res but much faster
-		Rio -d'\t' -ge "df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\") + theme(plot.title=element_text(size=$titleSize))"
+		Rio -d'\t' -ge "df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\",x=\"$x_axis_title\",y=\"$y_axis_title\") + theme(plot.title=element_text(size=$titleSize))"
 	else
 		# sets user specified height and width, dpi = 600
 		# get tmp png name
 		tmppng=$(mktemp -u --suffix .png)
-		Rio -d'\t' -ge "png(\"$tmppng\",units=\"in\",height=$5,width=$6,res=600); df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\") + theme(plot.title=element_text(size=$titleSize)); dev.off()" 1>/dev/null
+		Rio -d'\t' -ge "png(\"$tmppng\",units=\"in\",height=$5,width=$6,res=600); df\$$x <- factor(df\$$x, levels=unique(df\$$x));ggplot(df,aes(y=$y,x=$x)) + geom_bar(stat=\"identity\") + coord_flip() + labs(title=\"$titleText\",x=\"$x_axis_title\",y=\"$y_axis_title\") + theme(plot.title=element_text(size=$titleSize)); dev.off()" 1>/dev/null
 		cat $tmppng
 	fi
 }
