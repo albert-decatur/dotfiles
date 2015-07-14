@@ -401,13 +401,14 @@ function sortkh {
 	echo "$in" |\
 	sed '1d' |\
 	# sort with user options in double quotes
-	sort $1 |\
+	sort $1 -t'	'|\
 	sed "1 i$header"
 }
 # use [Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line) to make a bar chart of TSV from STDIN - for example output of sortfreq
 # NB: prints PNG to STDOUT so may want to pipe to "feh -" or redirect to file
 # example use: cat foo.tsv | tawk '{print $2}' | sortfreq | bargraph year count "title" 20 | feh -ZF -
 # note that sortkh is used to get the lowest value on the top of the graph, which will flip when ggplot's coord_flip() is used
+# note that the only needed user args are x and y - you can ignore title, title size, and dimensions for faster graphing, ideal for piping to "feh -"
 # high res example use: cat foo.tsv | tawk '{print $2}' | sortfreq | sortkh "-k1 -n" | bargraph year count "title" 20 6 9 > foo.png
 function plotbars { 
 	x=$1
