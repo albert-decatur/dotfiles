@@ -79,9 +79,11 @@ function round { awk "{printf \"%3.$1f\n\", \$1}"; }
 function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
 export awksum
 # get records from a txt that have text in columns beyond what they should have
-# user args: 1) input txt to check, 2) number of columns the file should have, 3) delimiter
-function col_extra { incsv=$1; lastcol=$2; d=$3; cols=$( seq 1 $lastcol | tr '\n' ',' | sed 's:,$::g' ); cut --complement -d "$d" -f $cols $incsv | sed 's:[ \t]\+::g' | nl -ba | mawk '{if($2 !~ /^$/)print $1}' | parallel 'sed -n {}p '$incsv'' ;}
-export col_extra
+# user args: 1) input txt to check, 2) number of columns the file should have
+function col_extra { 
+	intsv=$(cat)
+	echo "$intsv" | tawk "{if(NF > $1)print \$0}"
+}
 # swap position of two columns in a TSV
 # user args: 1) first col, 2) second col
 # input TSV comes from stdin
@@ -266,8 +268,17 @@ function joinmany_csv {
 	rm $tmpdb $tmpsql
 }
 # get a count of unique entries in every field in a TSV
-function uniqvals { intsv=$1; header=$(cat $intsv | head -n 1); nfields=$( echo "$header" | tr '\t' '\n' | wc -l ); for field in $(seq 1 $nfields); do cat $intsv | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}; done; echo "$header"; paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g'); }
-export uniqvals
+function uniqvals { 
+		intsv=$(cat)
+		header=$(echo "$intsv" | head -n 1)
+		nfields=$( echo "$header" | tr '\t' '\n' | wc -l )
+		for field in $(seq 1 $nfields)
+		do 
+			echo "$intsv" | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}
+		done
+		echo "$header"
+		paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g')
+	}
 # the following two functions create ngrams - length is chosen by the user
 # the first - rawgrams - provides a simplified word list, with no punctuation or standalone runs of numbers, all lowercase, breaks on whitespace
 # the second - ngrams - uses rawgrams to make a set of ngrams for the input doc
@@ -298,13 +309,13 @@ function rawgrams {
 }
 function ngrams { 
 	# use the rawgrams function on the first user arg to get terms
-	raw=$( cat $1 | rawgrams )
+	raw=$( cat | rawgrams )
 	# for every integer "n" between 1 and the user specified number of terms for the ngram,
 	# remove the first "n-1" terms and write to file ( note that writing to static filenames prevents using this in parallel ).
 	# then these files are pasted together.
 	# note that no terms are ignored for the first pass because the first term must be included!
 	paste $( 
-		for n in $( seq 1 $2 )
+		for n in $( seq 1 $1 )
 			do 
 				if [[ $n > 1 ]]; then 
 					d=$(($n-1))
@@ -321,7 +332,7 @@ function ngrams {
 	# remove tabs with no term next to them - this is to clean up after ngrams that were partly composed of ' : '
 	sed 's:^\t::g;s:\t$::g;s:\t\+:\t:g' |\
 	# enforce the user input gram term count - before this the ngrams could be shorter than user specification if the document was too short
-	awk -v gramlength=$2 '{ if ( NF == gramlength ) print $0 }'
+	awk -v gramlength=$1 '{ if ( NF == gramlength ) print $0 }'
 }
 # use bitly's sample.py from data_hacks to get n% of records randomly from STDIN, but keep the first record!
 function samplekh { 
