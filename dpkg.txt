@@ -1,9 +1,9 @@
-aptitude
-axel 
+aptitude 
+axel
 curl 
-detox 
-dtrx 
-feh 
+detox
+dtrx
+feh
 git-core 
 gt5
 htop
@@ -45,3 +45,4 @@ kpcli
 slock
 ufw
 canto
+mtpaint
