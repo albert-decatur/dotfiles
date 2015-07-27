@@ -46,3 +46,4 @@ slock
 ufw
 canto
 mtpaint
+surfraw
