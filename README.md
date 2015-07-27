@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-Bash functions for data science.
+Bash (or zsh!) functions for data science.
 
 alias or function|purpose|example|prerequisite
 ---|---|---|---
