@@ -53,6 +53,8 @@ uniqvals|given a TSV, return a TSV with the frequency of all unique values shown
 mkid|given a TSV, retursn the TSV with an integer ID field at the front|cat foo.tsv \| mkid
 parallel|make parallel behave like GNU parallel every time|cat foo \| parallel 'echo {}'|[parallel](http://www.gnu.org/software/parallel/)
 c|quick cut for TSV fields|cat foo.tsv \| c 8,9
+s|quick screen lock|s|[slock](http://tools.suckless.org/slock/)
+p|quick git add, commit, push|p|expects push over SSH
 
 Note that ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
 Note that terminator solarized colors come from [ghuntley](https://github.com/ghuntley/terminator-solarized).  
