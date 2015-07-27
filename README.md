@@ -59,4 +59,10 @@ p|quick git add, commit, push|p|expects push over SSH
 Note that ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
 Note that terminator solarized colors come from [ghuntley](https://github.com/ghuntley/terminator-solarized).  
 Note that xombrero changes downloads folder from ~/downloads to ~/Downloads.  Just for Ubuntu!  
+Note that to use surfraw's "sr" alias with this ~/.zshrc you will need to 
+
+```bash
+sudo rm /usr/bin/sr
+```
+
 Add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh.  

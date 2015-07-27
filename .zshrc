@@ -551,3 +551,8 @@ function s {
 function p {
 	git add . && git add -u && git commit && git push origin master
 }
+# quick duckduckgo search on surfraw
+# NB: you should remove /usr/bin/sr to use this
+function sr {
+	surfraw duckduckgo "$@"
+}
