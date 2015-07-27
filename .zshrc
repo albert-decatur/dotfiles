@@ -86,6 +86,10 @@ source $ZSH/oh-my-zsh.sh
 
 #########
 
+# set vim keybindings
+bindkey -v
+# get reverse history search
+bindkey '^R' history-incremental-search-backward
 # set vim as default editor
 export EDITOR=vim
 # print name of most recently modified file in dir
