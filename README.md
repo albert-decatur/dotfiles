@@ -54,6 +54,7 @@ mkid|given a TSV, retursn the TSV with an integer ID field at the front|cat foo.
 parallel|make parallel behave like GNU parallel every time|cat foo \| parallel 'echo {}'|[parallel](http://www.gnu.org/software/parallel/)
 c|quick cut for TSV fields|cat foo.tsv \| c 8,9
 
+Note that ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
 Note that terminator solarized colors come from [ghuntley](https://github.com/ghuntley/terminator-solarized).  
 Note that xombrero changes downloads folder from ~/downloads to ~/Downloads.  Just for Ubuntu!  
 Add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh.  
