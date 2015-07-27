@@ -1,8 +1,4 @@
 " ~/.vimrc
-
-set t_Co=256
-colorscheme calmar256-dark
-
 syntax on
 set nu
 set nowrap
@@ -11,3 +7,8 @@ set hlsearch
 set ls=2
 map <C-N> :tabn <enter>
 map <C-P> :tabp <enter>
+
+" get solarized
+"set background=light
+set background=dark
+colorscheme solarized
