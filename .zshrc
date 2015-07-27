@@ -1,15 +1,93 @@
+# Path to your oh-my-zsh installation.
+export ZSH=/home/adecatur/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="robbyrussell"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+# User configuration
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/adecatur/bin"
+# export MANPATH="/usr/local/man:$MANPATH"
+
+source $ZSH/oh-my-zsh.sh
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+# adecatur added
+
 # set vim as default editor
 export EDITOR=vim
-
-# get xombrero to use duckduckgo - supposed to be covered by ~/.xombrero.conf search_string
-function x {
-	xombrero "https://www.duckduckgo.com/?q=$1"
-}
-# quick access to keepass2 via cli
-function k {
-	kpcli --kdb ~/Database.kdbx
-}
-
 # print name of most recently modified file in dir
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
 export latest
@@ -41,6 +119,12 @@ alias theader="head -n 1 | tr '\t' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$
 alias pheader="head -n 1 | tr '|' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 # print numbered header of a CSV
 alias cheader="head -n 1 | tr ',' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
+# convert Gnumeric-recognized tables to TSV
+# more generic than csvformat from csvkit but slower, eg works on xlsx
+# requires gnumeric's ssconvert
+function table2tsv { 
+	ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator="	"' fd://0 fd://1 2>/dev/null
+}
 # convert TSV to CSV - uses csvkit, assumes input is TSV
 # also assumes max field size of no more than 1m characters
 # ssconvert does not have these limit flags but it is much slower
@@ -443,4 +527,19 @@ function plotbars {
 # example to print 8th and 9th fields of a TSV: cat foo.tsv | c 8
 function c {
 	cut -f$1
+}
+# get xombrero to use duckduckgo - supposed to be covered by ~/.xombrero.conf search_string
+function x {
+	xombrero "https://www.duckduckgo.com/?q=$1"
+}
+# quick access to keepass2 via cli
+function k {
+	kpcli --kdb ~/Database.kdbx
+}
+# quick screen locking
+function s {
+	# turn screen off
+	xset dpms force off
+	# lock screen
+	slock
 }
