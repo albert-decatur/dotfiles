@@ -1,8 +1,0 @@
-startup_message off
-defscrollback 1024
-# detach instead of quit
-autodetach on
-# clear scrollback from programs like vim
-altscreen on
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
