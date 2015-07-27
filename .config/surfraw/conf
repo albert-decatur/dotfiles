@@ -1,2 +1,1 @@
-SURFRAW_graphical=yes
-SURFRAW_graphical_browser=uzbl-tabbed
+SURFRAW_browser=w3m

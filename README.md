@@ -1,9 +1,15 @@
 dotfiles
 ========
 
-Bash (or zsh!) functions for data science.
+Bash (or zsh!) functions for data science.  
+Check dpkg.txt for a list of apt packages that are awesome.
+On a Debian based system (like Ubuntu!) you can
 
-alias or function|purpose|example|prerequisite
+```bash
+sudo apt-get install $( cat dpkg.txt | tr '\n' ' ' )
+```
+
+function|purpose|example|prerequisite
 ---|---|---|---
 latest|print the name of the most recently modified file in the current directory|latest|
 listold|list the oldest files over *n* MB in current directory|listold 100|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
