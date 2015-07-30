@@ -1,3 +1,6 @@
+# great dpkgs available in apt  
+### tested on Ubuntu 14.04  
+
 ### version control    
 git-core     
 tig # ncurses git interface    
@@ -28,7 +31,7 @@ nmap
 ### fun! and multimedia    
 imagemagick # image editing tool    
 libav-tools # video editing tool    
-feh # view images - might want sxiv instead    
+feh # view images - might want [sxiv](https://github.com/muennich/sxiv) instead    
 canto # CLI for feeds    
 mpv # mplayer fork: watch videos, listen to music  
 moc # music library in the command line    
@@ -46,6 +49,7 @@ surfraw # better than a browser
 ### data science / text munging    
 mawk # fast awk    
 jq # sed for JSON    
+# r-base-core # but I want a more updated R!  consider compiling from source
 moreutils # sponge is super convenient    
 pdftk # edit PDFs    
 poppler-utils # edit PDFs    
@@ -78,8 +82,8 @@ xclip # pipe to clipboard! or maybe you like xsel
 htop # better than top    
 kpcli # keepass CLI    
 slock # simple screen locker    
-evince # pdf viewer - might want mupdf    
-mutt # email client. alpine is a lot simpler    
+evince # pdf viewer - might want [mupdf](http://www.mupdf.com/)    
+mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
 gnupg2 # encrypt / decrypt with keys and password    
