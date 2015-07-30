@@ -6,7 +6,7 @@ Check dpkg.txt for a list of apt packages that are awesome.
 On a Debian based system (like Ubuntu!) you can
 
 ```bash
-sudo apt-get update && sudo apt-get install $( cat dpkg.md | sed 's:^*.*\|#.*::g' | tr '\n' ' ' )
+sudo apt-get update && sudo apt-get install $( cat dpkg.md | sed 's:*.*\|#.*::g' | tr '\n' ' ' )
 ```
 
 function|purpose|example|prerequisite

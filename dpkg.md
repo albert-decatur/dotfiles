@@ -1,8 +1,10 @@
 # great dpkgs available in apt  
 #### tested on Ubuntu 14.04  
 
-* r-base-core is not shown because I prefer later versions of R from source  
 * packages typically installed with npm, pip, cpan forthcoming in separate lists  
+* these packages are not shown because I like to compile their more recent versions from source
+  * r-base-core
+  * gdal-bin
 
 ### version control    
 git-core     
@@ -60,7 +62,6 @@ redis-tools # key-value db
 postgresql-9.3-postgis-2.1 # relational db, with GIS functions    
 sqlite3 # relational db    
 spatialite-bin # GIS for SQLite    
-gdal-bin # excellent GIS utils
 gnuplot # nice for quick plotting in terminal    
 xmlstarlet # parse XML    
 xsltproc # parse XML    
