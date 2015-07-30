@@ -54,3 +54,5 @@ getmail4
 hunspell
 fail2ban
 gnupg2
+cmatrix
+ninvaders
