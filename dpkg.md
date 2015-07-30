@@ -79,11 +79,13 @@ unrar
 
 ### user interface    
 vim    
+zsh  
 tmux    
-stterm # [simple terminal](http://st.suckless.org/)
-nodejs-dev  
+stterm # [simple terminal](http://st.suckless.org/)  
+i3 # tiled window manager  
+nodejs-dev   
 detox # automatically fix bad file/directory names    
-xclip # pipe to clipboard! or maybe you like xsel  
+xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
 htop # better than top    
 kpcli # keepass CLI    
 slock # simple screen locker    
@@ -93,7 +95,7 @@ getmail4 # backup email in maildir
 hunspell # spellcheck CLI    
 gnupg2 # encrypt / decrypt with keys and password    
 anacron # cron for boxes not up 24/7    
-pv # see progress of a pipe. I know you're inpatient    
+pv # see progress of a pipe. I know you're impatient    
 
 ### essentials - minimal systems sometimes do not come with these    
 build-essential    
