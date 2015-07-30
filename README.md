@@ -2,7 +2,7 @@ dotfiles
 ========
 
 Bash (or zsh!) functions for data science.  
-Check dpkg.txt for a list of apt packages that are awesome.
+Check dpkg.md for a list of apt packages that are awesome.
 On a Debian based system (like Ubuntu!) you can
 
 ```bash
