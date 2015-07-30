@@ -1,6 +1,9 @@
 # great dpkgs available in apt  
 #### tested on Ubuntu 14.04  
 
+* r-base-core is not shown because I prefer later versions of R from source  
+* packages typically installed with npm, pip, cpan forthcoming in separate lists  
+
 ### version control    
 git-core     
 tig # ncurses git interface    
@@ -49,7 +52,6 @@ surfraw # better than a browser
 ### data science / text munging    
 mawk # fast awk    
 jq # sed for JSON    
-# r-base-core # but I want a more updated R!  consider compiling from source
 moreutils # sponge is super convenient    
 pdftk # edit PDFs    
 poppler-utils # edit PDFs    
