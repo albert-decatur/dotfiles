@@ -60,6 +60,7 @@ redis-tools # key-value db
 postgresql-9.3-postgis-2.1 # relational db, with GIS functions    
 sqlite3 # relational db    
 spatialite-bin # GIS for SQLite    
+gdal-bin # excellent GIS utils
 gnuplot # nice for quick plotting in terminal    
 xmlstarlet # parse XML    
 xsltproc # parse XML    
