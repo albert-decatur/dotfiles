@@ -27,7 +27,7 @@
       type = Terminal
       parent = window0
       # can switch to solarized-dark or solarized-light
-      profile = default
+      profile = solarized-dark
     [[[window0]]]
       type = Window
       parent = ""
