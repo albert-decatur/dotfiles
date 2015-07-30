@@ -9,7 +9,7 @@ On a Debian based system (like Ubuntu!) you can
 # install most sensible packages
 sudo apt-get install $( cat dpkg.txt | grep -vE "^#" |  tr '\n' ' ' )
 # or go ahead and install them all!
-sudo apt-get install $( cat dpkg.txt |  tr '\n' ' ' )
+sudo apt-get install $( cat dpkg.txt |  sed 's:#::g' | tr '\n' ' ' )
 ```
 
 function|purpose|example|prerequisite
