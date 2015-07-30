@@ -6,10 +6,7 @@ Check dpkg.txt for a list of apt packages that are awesome.
 On a Debian based system (like Ubuntu!) you can
 
 ```bash
-# install most sensible packages
-sudo apt-get install $( cat dpkg.txt | grep -vE "^#" |  tr '\n' ' ' )
-# or go ahead and install them all!
-sudo apt-get install $( cat dpkg.txt |  sed 's:#::g' | tr '\n' ' ' )
+sudo apt-get install $( cat dpkg.txt |  tr '\n' ' ' )
 ```
 
 function|purpose|example|prerequisite
