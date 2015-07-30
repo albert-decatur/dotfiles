@@ -4,10 +4,8 @@ tig # ncurses git interface
 
 ### install things on a thing!  
 aptitude # 'aptitude install' can save you!  
-nodejs  
 npm  
-pip  
-cpan  
+python-pip
 
 ### get files  
 axel # try 'axel -n 20 some_url.com/bigFile'. for real  
@@ -32,7 +30,7 @@ imagemagick # image editing tool
 libav-tools # video editing tool  
 feh # view images - might want sxiv instead  
 canto # CLI for feeds  
-mplayer # watch videos, listen to music  
+mpv # mplayer fork: watch videos, listen to music
 moc # music library in the command line  
 scrot # take screenshots  
 mtpaint # simple image editor with GUI  
@@ -74,8 +72,9 @@ unrar
 ### user interface  
 vim  
 tmux  
+nodejs-dev
 detox # automatically fix bad file/directory names  
-xclip # pipe to clipboard!  
+xclip # pipe to clipboard! or maybe you like xsel
 htop # better than top  
 kpcli # keepass CLI  
 slock # simple screen locker  
