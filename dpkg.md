@@ -80,6 +80,7 @@ unrar
 ### user interface    
 vim    
 tmux    
+stterm # [simple terminal](http://st.suckless.org/)
 nodejs-dev  
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like xsel  
