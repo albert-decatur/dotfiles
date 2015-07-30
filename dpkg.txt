@@ -62,3 +62,10 @@ html2text
 anacron
 build-essential
 pv
+nodejs
+npm
+pip
+cpan
+openssh-client
+openssh-server
+raptor-utils
