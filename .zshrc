@@ -528,13 +528,9 @@ function plotbars {
 	fi
 }
 # quick cut
-# example to print 8th and 9th fields of a TSV: cat foo.tsv | c 8
+# example to print 8th and 9th fields of a TSV: cat foo.tsv | c 8,9
 function c {
 	cut -f$1
-}
-# get xombrero to use duckduckgo - supposed to be covered by ~/.xombrero.conf search_string
-function x {
-	xombrero "https://www.duckduckgo.com/?q=$1"
 }
 # quick access to keepass2 via cli
 function k {
