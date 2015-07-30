@@ -47,3 +47,7 @@ ufw
 canto
 mtpaint
 surfraw
+moc
+scrot
+mutt
+getmail4
