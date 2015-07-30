@@ -56,3 +56,6 @@ fail2ban
 gnupg2
 cmatrix
 ninvaders
+antiword
+odt2txt
+html2text
