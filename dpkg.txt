@@ -51,3 +51,6 @@ moc
 scrot
 mutt
 getmail4
+hunspell
+fail2ban
+gnupg2
