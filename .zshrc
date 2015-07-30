@@ -109,7 +109,7 @@ function pdf_subset { pdftk A=$1 cat A$2 output $3; }
 # cat TSV to this and output github flavored markdown table
 function tsv2githubmd { in=$(cat); col_count=$(echo "$in" | awk -F'\t' '{print NF}' | sed -n '1p' ); second_line=$( yes -- --- | head -n $col_count | tr '\n' '|' | sed 's:|$::g' ); echo "$in" | sed "1 a\\$second_line" | sed 's:\t:|:g'; };
 export tsv2githubmd
-# GNU parallel is stupid
+# GNU parallel why you no use GNU by default?
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
 alias tawk='mawk -F "\t" -v OFS="\t"'
