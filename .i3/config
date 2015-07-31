@@ -151,4 +151,4 @@ bar {
 
 ###########
 # set background
-exec --no-startup-id feh --bg-scale ~/.i3/foo.png
+exec --no-startup-id feh --bg-scale ~/.i3/stars.png

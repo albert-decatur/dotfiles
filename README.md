@@ -57,7 +57,8 @@ s|quick screen lock|s|[slock](http://tools.suckless.org/slock/)
 p|quick git add, commit, push|p|expects push over SSH
 
 * ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
-* add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh
+* add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh, if you change ~/.i3/config
+  * existing png under ~/.i3 from [radical cartography](http://radicalcartography.net/)
 * to use surfraw's "sr" alias with this ~/.zshrc you will need to 
 
 ```bash
