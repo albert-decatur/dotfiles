@@ -81,8 +81,9 @@ unrar
 vim    
 zsh  
 tmux    
-stterm # [simple terminal](http://st.suckless.org/)  
+terminator # heavier terminal but featureful  
 i3 # tiled window manager  
+stterm # [simple terminal](http://st.suckless.org/)  
 nodejs-dev   
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
