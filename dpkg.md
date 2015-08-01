@@ -71,6 +71,7 @@ raptor-utils # turtle parsing.  you heard me
 antiword # msoffice -> text    
 odt2txt # openoffice -> text    
 html2text    
+# python-numpy # code depending on numpy install often has trouble installing numpy itself  
 
 ### compression    
 dtrx # automatically "Do The Right eXtraction"    
@@ -105,4 +106,5 @@ python-dev python-pip
 python-setuptools  
 pkg-config  
 man    
+# libwebkit-dev # compiling browsers from source often need this
 ascii # ASCII lookup table    
