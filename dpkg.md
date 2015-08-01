@@ -35,6 +35,7 @@ nmap
 
 ### fun! and multimedia    
 imagemagick # image editing tool    
+gifsicle  
 libav-tools # video editing tool    
 feh # view images - might want [sxiv](https://github.com/muennich/sxiv) instead    
 canto # CLI for feeds    
