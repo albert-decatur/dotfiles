@@ -536,6 +536,10 @@ function c {
 function k {
 	kpcli --kdb ~/Database.kdbx
 }
+# quick access to graphical web browser vimb
+function v {
+	surfraw -browser=/usr/local/bin/vimb duckduckgo "$@"
+}
 # quick screen locking
 function s {
 	# turn screen off
