@@ -552,7 +552,13 @@ function p {
 	git add . && git add -u && git commit && git push origin master
 }
 # quick duckduckgo search on surfraw
+# unless an elvis is specified
 # NB: you should remove /usr/bin/sr to use this
 function sr {
-	surfraw duckduckgo "$@"
+        elvi=$(surfraw -elvi | grep -v "GLOBAL ELVI"|grep -oE "^[^--]*")
+        if [[ -z $(echo "$elvi" | grep -E "\b$1\b") ]]; then
+            surfraw duckduckgo "$@"
+        else
+            surfraw "$@"
+        fi
 }
