@@ -28,10 +28,10 @@ gt5 # seriously.  give it a try
 ### network    
 rsync     
 ufw    
-fail2ban    
+fail2ban # or maybe the simpler denyhosts   
 openssh-client    
 openssh-server    
-nmap     
+nmap # see which ports are open    
 
 ### fun! and multimedia    
 imagemagick # image editing tool    
@@ -80,12 +80,12 @@ unzip
 unrar     
 
 ### user interface    
-vim    
-zsh  
-tmux    
+vim # text editor  
+zsh # shell  
+tmux # terminal multiplexer - more terminals!!   
 terminator # heavier terminal but featureful  
 i3 # tiled window manager  
-stterm # [simple terminal](http://st.suckless.org/)  
+# stterm # [simple terminal](http://st.suckless.org/)  
 nodejs-dev   
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
@@ -98,6 +98,7 @@ getmail4 # backup email in maildir
 hunspell # spellcheck CLI    
 gnupg2 # encrypt / decrypt with keys and password    
 anacron # cron for boxes not up 24/7    
+nwipe # wipe devices  
 pv # see progress of a pipe. I know you're impatient    
 
 ### essentials - minimal systems sometimes do not come with these    
