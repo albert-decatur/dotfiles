@@ -97,6 +97,8 @@ mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
 gnupg2 # encrypt / decrypt with keys and password    
+tor-arm # monitor tor traffic
+paperkey # helps preserve GPG keys on paper!
 anacron # cron for boxes not up 24/7    
 nwipe # wipe devices  
 pv # see progress of a pipe. I know you're impatient    
