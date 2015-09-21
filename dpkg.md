@@ -112,5 +112,7 @@ python-setuptools
 pkg-config  
 man    
 lsof  
+parted  
+gparted  
 # libwebkit-dev # compiling browsers from source often need this
 ascii # ASCII lookup table    
