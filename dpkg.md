@@ -92,7 +92,7 @@ xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xse
 htop # better than top    
 kpcli # keepass CLI    
 slock # simple screen locker    
-evince # pdf viewer - might want [mupdf](http://www.mupdf.com/)    
+mupdf # pdf viewer - might evince instead
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
