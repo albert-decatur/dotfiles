@@ -76,6 +76,7 @@ html2text
 ### compression    
 dtrx # automatically "Do The Right eXtraction"    
 p7zip-full     
+zip  
 unzip     
 unrar     
 
@@ -92,13 +93,14 @@ xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xse
 htop # better than top    
 kpcli # keepass CLI    
 slock # simple screen locker    
-mupdf # pdf viewer - might evince instead
+mupdf # pdf viewer - might evince instead 
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
 gnupg2 # encrypt / decrypt with keys and password    
-tor-arm # monitor tor traffic
-paperkey # helps preserve GPG keys on paper!
+pinentry-curses  
+tor-arm # monitor tor traffic 
+paperkey # helps preserve GPG keys on paper! 
 anacron # cron for boxes not up 24/7    
 nwipe # wipe devices  
 pv # see progress of a pipe. I know you're impatient    
