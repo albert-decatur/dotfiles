@@ -111,5 +111,6 @@ python-dev python-pip
 python-setuptools  
 pkg-config  
 man    
+lsof  
 # libwebkit-dev # compiling browsers from source often need this
 ascii # ASCII lookup table    
