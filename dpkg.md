@@ -21,6 +21,7 @@ wget
 curl     
 lftp    
 rtorrent    
+# grive # for google drive!  
 
 ### disk use    
 gt5 # seriously.  give it a try    
