@@ -536,10 +536,6 @@ function c {
 function k {
 	kpcli --kdb ~/Database.kdbx
 }
-# quick access to graphical web browser vimb
-function v {
-	surfraw -browser=/usr/local/bin/vimb duckduckgo "$@"
-}
 # quick screen locking
 function s {
 	# turn screen off
@@ -560,5 +556,14 @@ function sr {
             surfraw duckduckgo "$@"
         else
             surfraw "$@"
+        fi
+}
+# quick access to graphical web browser vimb
+# will visit ^.*:// directly but all others to duckduckgo
+function v {
+        if [[ -n $(echo "$@" | grep -E "^.*://" ) ]]; then
+            /usr/local/bin/vimb "$@"
+        else
+	    surfraw -browser=/usr/local/bin/vimb duckduckgo "$@"
         fi
 }
