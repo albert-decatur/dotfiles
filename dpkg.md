@@ -92,7 +92,7 @@ nodejs-dev
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
 htop # better than top    
-kpcli # keepass CLI    
+kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu     
 slock # simple screen locker    
 mupdf # pdf viewer - might evince instead 
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
