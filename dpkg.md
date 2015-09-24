@@ -93,11 +93,13 @@ detox # automatically fix bad file/directory names
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
 htop # better than top    
 kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu     
+# tcplay # like truecrypt but CLI  
 slock # simple screen locker    
 mupdf # pdf viewer - might evince instead 
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
+slrn # usenet reader  
 gnupg2 # encrypt / decrypt with keys and password    
 pinentry-curses  
 tor-arm # monitor tor traffic 
