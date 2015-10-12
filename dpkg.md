@@ -91,7 +91,9 @@ i3 # tiled window manager
 nodejs-dev   
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
-htop # better than top    
+htop # monitor system processes  
+iftop # monitor network interface traffic  
+mtr # trace / ping combo   
 kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu     
 # tcplay # like truecrypt but CLI  
 slock # simple screen locker    
