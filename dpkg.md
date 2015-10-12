@@ -110,6 +110,7 @@ pv # see progress of a pipe. I know you're impatient
 
 ### essentials - minimal systems sometimes do not come with these    
 build-essential    
+strace  
 python-dev python-pip  
 python-setuptools  
 pkg-config  
