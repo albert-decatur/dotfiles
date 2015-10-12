@@ -4,11 +4,14 @@
   [[default]]
     use_system_font = False
     font = Monospace 17
+    background_image = None
 [layouts]
   [[default]]
     [[[child1]]]
       type = Terminal
       parent = window0
+      profile = default
+      command = tmux
     [[[window0]]]
       type = Window
       parent = ""
