@@ -11,7 +11,7 @@
       type = Terminal
       parent = window0
       profile = default
-      command = tmux
+      command = tmuxinator default
     [[[window0]]]
       type = Window
       parent = ""
