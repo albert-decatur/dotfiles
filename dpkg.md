@@ -49,6 +49,7 @@ ninvaders # fun but not dumb
 
 ### web browsers    
 w3m    
+w3m-img # images for w3m  
 links    
 surf # graphical!    
 surfraw # better than a browser    
