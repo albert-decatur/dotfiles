@@ -107,6 +107,8 @@ gnupg2 # encrypt / decrypt with keys and password
 pinentry-curses  
 tor-arm # monitor tor traffic 
 paperkey # helps preserve GPG keys on paper! 
+dcfldd # like dd but extra features   
+bmap-tools # like dd but faster    
 anacron # cron for boxes not up 24/7    
 nwipe # wipe devices  
 pv # see progress of a pipe. I know you're impatient    
