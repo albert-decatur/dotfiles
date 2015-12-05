@@ -50,7 +50,7 @@ html_decode|decode HTML encoded text|echo '&amp;' \| html_decode|[HTML::Entities
 libretsv|force LibreOffice to open TSV as a table|libretsv foo.tsv|[LibreOffice](http://www.libreoffice.org/)
 dumbplot|use GNUplot to graph one or two numeric fields in the terminal. removes header if found. assumes should graph points but can graphs lines| cat foo.tsv \| cut -f3,4 \| dumbplot OR cat foo.tsv \| cut -f4 \| dumbplot lines |[gnuplot](http://www.gnuplot.info/download.html)
 uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|cat foo.tsv \| uniqvals \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
-mkid|given a TSV, retursn the TSV with an integer ID field at the front|cat foo.tsv \| mkid
+mkid|given a TSV, returns input with an integer ID field at the front|cat foo.tsv \| mkid
 parallel|make parallel behave like GNU parallel every time|cat foo \| parallel 'echo {}'|[parallel](http://www.gnu.org/software/parallel/)
 c|quick cut for TSV fields|cat foo.tsv \| c 8,9
 s|quick screen lock|s|[slock](http://tools.suckless.org/slock/)
