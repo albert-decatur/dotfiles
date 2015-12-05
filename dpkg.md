@@ -1,10 +1,9 @@
-# great dpkgs available in apt  
+# great packages available in apt  
 #### tested on Ubuntu 14.04  
 
-* packages typically installed with npm, pip, cpan forthcoming in separate lists  
-* these packages are not shown because I like to compile their more recent versions from source
-  * r-base-core
-  * gdal-bin
+* these tools focus on simplicity and low overhead
+ * command line for the win
+* packages typically installed with npm, pip, cpan not listed here
 
 ### version control    
 git-core     
@@ -15,49 +14,53 @@ aptitude # 'aptitude install' can save you!
 npm    
 python-pip  
 
-### get files    
-axel # try 'axel -n 20 some_url.com/bigFile'. for real    
+### get files   
+axel # download faster. try 'axel -n 20 example.com/bigFile'. for real    
+rsync # mmmm remote delta copy. try it with inotify!      
+curl # do anything over any protocol (not quite but nearly)
 wget    
-curl     
 lftp    
 rtorrent    
-# grive # for google drive!  
 
-### disk use    
-gt5 # seriously.  give it a try    
+### check disk use    
+gt5 # seriously.  give it a try. or maybe you prefer ncdu
 
 ### network    
-rsync     
-ufw    
+ufw # easy firewall   
 fail2ban # or maybe the simpler denyhosts   
 openssh-client    
-openssh-server    
-nmap # see which ports are open    
+openssh-server   
+nmap # check if your ports are open
+iftop # monitor network traffic live  
+nethogs # which processes are using the network most?
+iperf # network throughput test between two boxes you control
+mtr # trace / ping combo   
+tor-arm # monitor traffic on a tor node 
+atar # silently collects system stats. or if you're super cool use collectl, or dstat if you like it live
+vnstat # silently collects network traffic stats
 
 ### fun! and multimedia    
-imagemagick # image editing tool    
+imagemagick # image editing tool. or if you like forks use graphicsmagick    
 gifsicle  
-libav-tools # video editing tool    
-feh # view images - might want [sxiv](https://github.com/muennich/sxiv) instead    
+libav-tools # video editing
+feh # view images.
 canto # CLI for feeds    
-mpv # mplayer fork: watch videos, listen to music  
+mpv # mplayer fork: watch videos, listen to music. or use vlc
 moc # music library in the command line    
-scrot # take screenshots    
-mtpaint # simple image editor with GUI    
+scrot # take screenshots. I know - gross name
+mtpaint # crazy simple GUI image editor
 cmatrix # dumb and fun    
 ninvaders # fun but not dumb    
 
-### web browsers    
-w3m    
+### command line web browsers    
+w3m # maybe you prefer the browser "links"
 w3m-img # images for w3m  
-links    
-surf # graphical!    
-surfraw # better than a browser    
+surfraw # better than a browser
 
 ### data science / text munging    
 mawk # fast awk    
-jq # sed for JSON    
-moreutils # sponge is super convenient    
+jq # parse JSON fast   
+moreutils # sponge is super convenient   
 pdftk # edit PDFs    
 poppler-utils # edit PDFs    
 redis-server # key-value db    
@@ -67,13 +70,12 @@ sqlite3 # relational db
 spatialite-bin # GIS for SQLite    
 gnuplot # nice for quick plotting in terminal    
 xmlstarlet # parse XML    
-xsltproc # parse XML    
+xsltproc # use XSLT. so convenient
 gnumeric # spreadsheet program great for converter "ssconvert"    
-raptor-utils # turtle parsing.  you heard me    
+raptor-utils # turtle parsing.  you heard me. it's an RDF thing
 antiword # msoffice -> text    
 odt2txt # openoffice -> text    
-html2text    
-# python-numpy # code depending on numpy install often has trouble installing numpy itself  
+html2text # just simple
 
 ### compression    
 dtrx # automatically "Do The Right eXtraction"    
@@ -86,27 +88,17 @@ unrar
 vim # text editor  
 zsh # shell  
 tmux # terminal multiplexer - more terminals!!   
-terminator # heavier terminal but featureful  
-i3 # tiled window manager  
-# stterm # [simple terminal](http://st.suckless.org/)  
-nodejs-dev   
 detox # automatically fix bad file/directory names    
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
 htop # monitor system processes  
-iftop # monitor network interface traffic  
-mtr # trace / ping combo   
-kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu     
-# tcplay # like truecrypt but CLI  
 slock # simple screen locker    
-mupdf # pdf viewer - might evince instead 
+mupdf # pdf viewer - might want evince instead 
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler    
 getmail4 # backup email in maildir    
 hunspell # spellcheck CLI    
-slrn # usenet reader  
 gnupg2 # encrypt / decrypt with keys and password    
-pinentry-curses  
-tor-arm # monitor tor traffic 
-paperkey # helps preserve GPG keys on paper! 
+pinentry-curses # for gnupg2
+paperkey # helps preserve GPG secret key on paper! 
 dcfldd # like dd but extra features   
 bmap-tools # like dd but faster    
 anacron # cron for boxes not up 24/7    
@@ -115,13 +107,19 @@ pv # see progress of a pipe. I know you're impatient
 
 ### essentials - minimal systems sometimes do not come with these    
 build-essential    
-strace  
-python-dev python-pip  
-python-setuptools  
-pkg-config  
+at   
 man    
 lsof  
+strace  
 parted  
 gparted  
-# libwebkit-dev # compiling browsers from source often need this
+python-dev   
+python-setuptools  
+pkg-config  
 ascii # ASCII lookup table    
+
+### these won't install using the README command but they're cool
+#### python-numpy # code depending on numpy install often has trouble installing numpy itself  
+#### i3 # tiled window manager  
+#### kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu     
+#### libwebkit-dev # compiling browsers from source often needs this
