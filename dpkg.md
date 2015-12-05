@@ -36,7 +36,7 @@ nethogs # which processes are using the network most?
 iperf # network throughput test between two boxes you control  
 mtr # trace / ping combo  
 tor-arm # monitor traffic on a tor node  
-atar # silently collects system stats. or if you're super cool use collectl, or dstat if you like it live  
+atsar # silently collects system stats. or if you're super cool use collectl, or dstat if you like it live  
 vnstat # silently collects network traffic stats  
   
 ### fun! and multimedia  
@@ -60,7 +60,6 @@ surfraw # better than a browser
 ### data science / text munging  
 mawk # fast awk  
 jq # parse JSON fast  
-moreutils # sponge is super convenient  
 pdftk # edit PDFs  
 poppler-utils # edit PDFs  
 redis-server # key-value db  
@@ -118,8 +117,10 @@ python-setuptools
 pkg-config  
 ascii # ASCII lookup table  
   
+  
 ### these won't install using the README command but they're cool  
-#### python-numpy # code depending on numpy install often has trouble installing numpy itself  
-#### i3 # tiled window manager  
-#### kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu  
-#### libwebkit-dev # compiling browsers from source often needs this  
+ python-numpy # code depending on numpy install often has trouble installing numpy itself  
+ i3 # tiled window manager  
+ kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu  
+ libwebkit-dev # compiling browsers from source often needs this  
+ moreutils # sponge is super convenient. however, it will mess with your GNU parallel install because it also has a command named 'parallel'  
