@@ -567,3 +567,5 @@ function v {
 	    surfraw -browser=/usr/local/bin/vimb duckduckgo "$@"
         fi
 }
+# use tmuxinator
+source ~/bin/tmuxinator.zsh
