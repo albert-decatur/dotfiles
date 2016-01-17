@@ -90,6 +90,10 @@ source $ZSH/oh-my-zsh.sh
 bindkey -v
 # get reverse history search
 bindkey '^R' history-incremental-search-backward
+HISTSIZE=100000
+SAVEHIST=100000
+# share history, eg tmux windows
+setopt share_history
 # set vim as default editor
 export EDITOR=vim
 # print name of most recently modified file in dir
