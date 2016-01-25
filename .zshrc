@@ -211,12 +211,47 @@ function col_extra {
 }
 # swap position of two columns in a TSV
 # user args: 1) first col, 2) second col
-# input TSV comes from stdin
+# input TSV comes from STDIN
 function col_swap { mawk -F'\t' " { OFS=\"\t\"; t = \$${1}; \$${1} = \$${2}; \$${2} = t; print; } "; }
 # sort a TSV according to column names, using an arbitrary sort flag, eg -d or -n
 # example use: col_sort -n in.tsv
 # NB: relies on table2tsv, csvjoin, mawk
-function col_sort { intsv=$2; cols_order=$( cat $intsv | head -n 1 | tr "\t" "\n" | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_sorted=$( echo "$cols_order" | mawk -F'\t' '{print $2}'|sort $1 | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_order=$( echo -e "col_num\tcol_name\n$cols_order"); cols_sorted=$( echo -e "col_num_new\tcol_name\n$cols_sorted" ); awk_print_order=$( csvjoin -t -c2,2 <( echo "$cols_order" ) <( echo "$cols_sorted" )|cut -d, --complement -f2,4|table2tsv |sort -k2,2 -n|cut -f1|sed '1d'|sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'); awk -F"\t" "{OFS=\"\t\";print $awk_print_order}" $intsv; };
+# NB: would be nice to use STDIN as input
+function col_sort { 
+    intsv=$2
+    cols_order=$( 
+        cat $intsv |\
+        head -n 1 |\
+        tr "\t" "\n" |\
+        nl -ba |\
+        sed 's:^[ \t]\+::g;s:[ \t]\+$::g' 
+    )
+    cols_sorted=$( 
+        echo "$cols_order" |\
+        mawk -F'\t' '{print $2}'|\
+        sort $1 |\
+        nl -ba |\
+        sed 's:^[ \t]\+::g;s:[ \t]\+$::g' 
+    )
+    cols_order=$( 
+        echo -e "col_num\tcol_name\n$cols_order"
+    )
+    cols_sorted=$( 
+        echo -e "col_num_new\tcol_name\n$cols_sorted" 
+    )
+    awk_print_order=$( 
+        csvjoin -t -c2,2 <( echo "$cols_order" ) <( echo "$cols_sorted" )|\
+        cut -d, --complement -f2,4|\
+        table2tsv |\
+        sort -k2,2 -n|\
+        cut -f1|\
+        sed '1d'|\
+        sed 's:^:$:g'|\
+        tr '\n' ','|\
+        sed 's:,$::g'
+    )
+    awk -F"\t" "{OFS=\"\t\";print $awk_print_order}" $intsv 
+}
 # make a string for awk-style column printing ( eg "$1,$2" ) from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
 # list all tables and fields in a psql db, tables in left col and their fields in right col, tab separated
