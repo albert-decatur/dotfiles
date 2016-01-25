@@ -13,7 +13,7 @@ function|purpose|example|prerequisite
 ---|---|---|---
 latest|print the name of the most recently modified file in the current directory|latest|
 listold|list the oldest files over _n_ MB in current directory|listold 100|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
-maybedups|prints TSV of probable file duplicates of largest _n_ files under current directory|maybedups 10 \| csvlook -t \| vim -|tawk
+maybedups|prints TSV of probable file duplicates of largest _n_ files under current directory. NB: files may not be duplicates|maybedups 10 \| csvlook -t \| vim -|tawk
 clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge.net/projects/xclip/)
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 samplekh|get a percent of random records but keep your header line!|cat foo.tsv \| tawk '{print $4,$5}' \| samplekh 3|bit.ly's [data_hacks](https://github.com/bitly/data_hacks)
