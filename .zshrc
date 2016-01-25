@@ -98,11 +98,9 @@ setopt share_history
 export EDITOR=vim
 # print name of most recently modified file in dir
 function latest { ls -c $1 | sed -n '1p' | sed 's:^:\":g;s:$:\":g'; }
-export latest
 # list oldest files over *n* MB under current dir
 # note that MB count must be integer
 function listold { find . -size +$1M -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
-export listold
 # list _probable_ duplicates of the _n_ largest files under current dir, sort by size descending
 # _probable_ duplicates have the same name and are the same size
 # great for finding directories that are near identical and hidden in TB of data
@@ -147,7 +145,6 @@ function maybedups {
                 sed '1i\name\tsize_in_KB\tpath'
             fi
 }
-export maybedups
 # copy stdout to clipboard
 # like Mac's pbcopy
 alias clipboard="xclip -selection clip-board -i"
@@ -157,7 +154,6 @@ alias clipboard="xclip -selection clip-board -i"
 function pdf_subset { pdftk A=$1 cat A$2 output $3; }
 # cat TSV to this and output github flavored markdown table
 function tsv2githubmd { in=$(cat); col_count=$(echo "$in" | awk -F'\t' '{print NF}' | sed -n '1p' ); second_line=$( yes -- --- | head -n $col_count | tr '\n' '|' | sed 's:|$::g' ); echo "$in" | sed "1 a\\$second_line" | sed 's:\t:|:g'; };
-export tsv2githubmd
 # GNU parallel why you no use GNU by default?
 alias parallel='parallel --gnu'
 # use mawk with tab delimiter for input and output
@@ -175,6 +171,7 @@ alias cheader="head -n 1 | tr ',' '\n' | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$:
 # convert Gnumeric-recognized tables to TSV
 # more generic than csvformat from csvkit but slower, eg works on xlsx
 # requires gnumeric's ssconvert
+# NB: some character encoding issues
 function table2tsv { 
 	ssconvert --export-type Gnumeric_stf:stf_assistant -O 'separator="	"' fd://0 fd://1 2>/dev/null
 }
@@ -182,7 +179,6 @@ function table2tsv {
 # also assumes max field size of no more than 1m characters
 # ssconvert does not have these limit flags but it is much slower
 function table2csv { csvformat -t -z 1000000 $1;}
-export table2csv
 # print frequency of unique entries descending
 # keeps header in place
 function sortfreq { 
@@ -207,7 +203,6 @@ function round { awk "{printf \"%3.$1f\n\", \$1}"; }
 # sum a column in awk.  don't use sci notation
 # uses STDIN
 function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
-export awksum
 # get records from a txt that have text in columns beyond what they should have
 # user args: 1) input txt to check, 2) number of columns the file should have
 function col_extra { 
@@ -218,22 +213,18 @@ function col_extra {
 # user args: 1) first col, 2) second col
 # input TSV comes from stdin
 function col_swap { mawk -F'\t' " { OFS=\"\t\"; t = \$${1}; \$${1} = \$${2}; \$${2} = t; print; } "; }
-export col_swap
 # sort a TSV according to column names, using an arbitrary sort flag, eg -d or -n
 # example use: col_sort -n in.tsv
 # NB: relies on table2tsv, csvjoin, mawk
 function col_sort { intsv=$2; cols_order=$( cat $intsv | head -n 1 | tr "\t" "\n" | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_sorted=$( echo "$cols_order" | mawk -F'\t' '{print $2}'|sort $1 | nl -ba | sed 's:^[ \t]\+::g;s:[ \t]\+$::g' ); cols_order=$( echo -e "col_num\tcol_name\n$cols_order"); cols_sorted=$( echo -e "col_num_new\tcol_name\n$cols_sorted" ); awk_print_order=$( csvjoin -t -c2,2 <( echo "$cols_order" ) <( echo "$cols_sorted" )|cut -d, --complement -f2,4|table2tsv |sort -k2,2 -n|cut -f1|sed '1d'|sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'); awk -F"\t" "{OFS=\"\t\";print $awk_print_order}" $intsv; };
-export col_sort
 # make a string for awk-style column printing ( eg "$1,$2" ) from a list of numbers
 alias awkcols="sed 's:^:$:g'|tr '\n' ','| sed 's:,$::g'"
 # list all tables and fields in a psql db, tables in left col and their fields in right col, tab separated
 function psql_listcols { echo "\d" | psql -d $1 | mawk -F'|' '{print $2}' | sed '1,3d' | grep -vE "^$" | parallel 'echo copy \(select \* from {} limit 0\) to stdout\ with csv header\; | psql -d '$1' | tr "," "\n" | sed "s:^:{}:g" | sed "s:^[ \t]\+::g;s:[ \t]\+$::g;s:[ \t]\+:\t:g"'; }
-export psql_listcols
 # find all files in working dir with a given extension
 # essentially recursive "ls *.foo"
 # example use: find_ext shp
 function find_ext { find . -type f -iregex ".*[.]$1$"; }
-export find_ext
 # URL encode
 function url_encode { perl -MURI::Escape -e 'print uri_escape(<STDIN>); print "\n";';}
 # URL unencode
@@ -247,7 +238,6 @@ function html_decode { perl -Mutf8 -MHTML::Entities -ne 'print decode_entities($
 # open TSV with libreoffice calc
 # libre is stupid
 function libretsv { if [[ $( echo "$1" | grep -oE "[^.]*$" ) = "tsv" ]]; then libreoffice --calc $1; fi ;}
-export function libretsv
 # use GNUplot to plot one or two columns of values, inspired by jeroenjanssens
 # https://github.com/jeroenjanssens/data-science-at-the-command-line/blob/master/tools/dumbplot
 # assumes tab separated, removes header if found, assumes plot type points unless user supplies argument
@@ -274,7 +264,6 @@ function dumbplot {
 		gnuplot -e "set term dumb size $size; set datafile separator \"\t\"; plot \"-\" with $plotType"
 	fi
 }
-export dumbplot
 # write SQL to join an arbitrary number of tables to each other, given that they have a field of the same name to join on
 # use double quoted list for table names
 # example use: joinmany_psql "1 2 3 4" example_id_field "full outer join" foo_db
