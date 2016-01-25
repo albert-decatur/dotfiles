@@ -103,6 +103,51 @@ export latest
 # note that MB count must be integer
 function listold { find . -size +$1M -printf "%p\t%k\t%TY-%Tm-%Td\n" | sort -k3,3 -t'	' -n | awk -F'\t' '{print $1}'; }
 export listold
+# list _probable_ duplicates of the _n_ largest files under current dir, sort by size descending
+# _probable_ duplicates have the same name and are the same size
+# great for finding directories that are near identical and hidden in TB of data
+# NB: maybedups does not run any checksums and cannot guarentee that files are actually duplicates!! it is especially bad with small files
+# example: maybedups 1000 | csvlook -t | vim -
+# TODO: add IDs by filename/kb size combo
+function maybedups {
+    # choose how many of the biggest files to consider
+    n=$1
+    basenameSizePath_tsv=$( 
+            # find the size of all files under current dir, in kb
+            find . -type f -exec du -ak {} + |\
+            sort -rn |\
+            # keep only the _n_ biggest
+            head -n $n |\
+            # make a TSV of file basename,size in kb,path relative to execution dir
+            tawk '{path=$2;gsub(/^.*[\/]/,"",$2);print $2,$1,path}' 
+        )
+        basenameSize_dups=$( 
+            echo "$basenameSizePath_tsv" |\
+            # consider just the file basenames and sizes in kb
+            tawk '{print $1,$2}' |\
+            sort |\
+            # count the unique file basenames and sizes in kb
+            uniq -c |\
+            # remove leading whitespace and make sure counts are first column in a new TSV
+            sed 's:^\s\+\([0-9]\+\s\+\):\1\t:g' |\
+            # if the basename/size pair occurs more than once among the considered files, print a TSV of file basename, size in kb
+            tawk '{if($1 > 1)print $2,$3}' 
+        )
+            # if no possible duplicates were found, print error message and quit
+            if [[ -z "$basenameSize_dups" ]]; then 
+                echo "ERROR: no near-duplicates were found based on basename and file size"
+            else 
+                # if possible duplicates were found, pull out paths relative to the execution dir
+                grep -Ff <(echo "$basenameSize_dups" | sed 's:^\|$:\t:g') <(echo "$basenameSizePath_tsv" | sed 's:^:\t:g') |\
+                sed 's:^\t::g'|\
+                # sort both by size and filename
+                # NB: '\t' as tab delimiter makes sort unhappy so we use echo - ridiculous!
+                sort -t"$(echo -e "\t")" -k 2,2rn -k 1,1d|\
+                # add header to output TSV
+                sed '1i\name\tsize_in_KB\tpath'
+            fi
+}
+export maybedups
 # copy stdout to clipboard
 # like Mac's pbcopy
 alias clipboard="xclip -selection clip-board -i"
