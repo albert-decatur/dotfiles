@@ -54,8 +54,11 @@ uniqvals|given a TSV, return a TSV with the frequency of all unique values shown
 mkid|given a TSV, returns input with an integer ID field at the front|cat foo.tsv \| mkid
 parallel|make parallel behave like GNU parallel every time|cat foo \| parallel 'echo {}'|[parallel](http://www.gnu.org/software/parallel/)
 c|quick cut for TSV fields|cat foo.tsv \| c 8,9
+k|quick open KeePass on commandline, hard codes filepath|k|kpcli
 s|quick screen lock|s|[slock](http://tools.suckless.org/slock/)
 p|quick git add, commit, push|p|expects push over SSH
+sr|quick open text web browser, uses surfraw elvi, otherwise assumes search with duckduckgo.com|sr george washington|surfraw
+v|quick open graphical web browser vimb. assumes duckduckgo.com if not given a website|v george washinton|vimb
 
 * ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
 * add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh, if you change ~/.i3/config

@@ -606,8 +606,9 @@ function c {
 	cut -f$1
 }
 # quick access to keepass2 via cli
+# NB: assumes folder ~/sync - used by syncthing
 function k {
-	kpcli --kdb ~/Database.kdbx
+	kpcli --kdb ~/sync/Database.kdbx
 }
 # quick screen locking
 function s {
