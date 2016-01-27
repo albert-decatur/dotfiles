@@ -433,8 +433,9 @@ function uniqrecs {
     echo "$header"
     paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g')
 }
-# get unique values for a single field - does not sort, but fast
-# example: unique
+# get unique values for a single field - fast, does not sort
+# NB: keeps header in place
+# example: cat foo.tsv | c 1 | unique
 function unique {
     mawk '!x[$0]++'
 }
