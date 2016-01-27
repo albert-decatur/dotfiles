@@ -133,7 +133,7 @@ function maybedups {
         )
             # if no possible duplicates were found, print error message and quit
             if [[ -z "$basenameSize_dups" ]]; then 
-                echo "ERROR: no near-duplicates were found based on basename and file size"
+                echo "ERROR: no near-duplicates were found based on basename and file size" 1>&2
             else 
                 # if possible duplicates were found, pull out paths relative to the execution dir
                 grep -Ff <(echo "$basenameSize_dups" | sed 's:^\|$:\t:g') <(echo "$basenameSizePath_tsv" | sed 's:^:\t:g') |\
