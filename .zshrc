@@ -202,7 +202,7 @@ alias trim="sed 's:^[ \t]\+::g;s:[ \t]\+$::g'"
 function round { awk "{printf \"%3.$1f\n\", \$1}"; }
 # sum a column in awk.  don't use sci notation
 # uses STDIN
-function awksum { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
+function sumawk { awk '{ sum += $1 } END { printf "%.4f\n", sum }' ; }
 # get records from a txt that have text in columns beyond what they should have
 # user args: 1) input txt to check, 2) number of columns the file should have
 function col_extra { 
@@ -422,17 +422,22 @@ function joinmany_csv {
 	rm $tmpdb $tmpsql
 }
 # get a count of unique entries in every field in a TSV
-function uniqvals { 
-		intsv=$(cat)
-		header=$(echo "$intsv" | head -n 1)
-		nfields=$( echo "$header" | tr '\t' '\n' | wc -l )
-		for field in $(seq 1 $nfields)
-		do 
-			echo "$intsv" | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}
-		done
-		echo "$header"
-		paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g')
-	}
+function uniqrecs { 
+    intsv=$(cat)
+    header=$(echo "$intsv" | head -n 1)
+    nfields=$( echo "$header" | tr '\t' '\n' | wc -l )
+    for field in $(seq 1 $nfields)
+    do 
+            echo "$intsv" | sed '1d' | mawk -F'\t' "{print \$$field}" | sort | uniq -c | sort -k1 -rn > /tmp/${field}
+    done
+    echo "$header"
+    paste -d'\t' $(seq 1 $nfields | sed 's:^:/tmp/:g')
+}
+# get unique values for a single field - does not sort, but fast
+# example: unique
+function unique {
+    mawk '!x[$0]++'
+}
 # the following two functions create ngrams - length is chosen by the user
 # the first - rawgrams - provides a simplified word list, with no punctuation or standalone runs of numbers, all lowercase, breaks on whitespace
 # the second - ngrams - uses rawgrams to make a set of ngrams for the input doc

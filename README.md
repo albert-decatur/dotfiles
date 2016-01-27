@@ -38,7 +38,7 @@ sortfreq|print counts of unique values descending|cat foo.tsv \| tawk '{ print $
 funky_chars|return the count for each unique non-alpha non-digit character in the input|cat foo.tsv \| tawk '{ print $4 }' \| funky_chars|
 trim|remove leading and trailing whitespace|cat foo \| trim|
 round|round numeric field to the nearest n digits|cat foo \| round 2|
-awksum|sum a single numeric field|cat foo.tsv \| tawk '{ print $2 }' \| awksum|
+sumawk|sum a single numeric field|cat foo.tsv \| tawk '{ print $2 }' \| sumawk|
 col_extra|print records that have content beyond expected number of fields for delimited text|cat foo.tsv \| col_extra 19|[mawk](http://invisible-island.net/mawk/)
 col_swap|switch the position of two columns in delimited text|cat foo.tsv \| col_swap 3 4 \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/)
 col_sort|use UNIX sort flags (eg -n or -d) to reorder TSV fields|col_sort -n foo.tsv \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/),[csvkit](https://csvkit.readthedocs.org),table2tsv
@@ -50,7 +50,8 @@ html_encode|HTML encode text|echo '&' \| html_encode|[HTML::Entities](http://sea
 html_decode|decode HTML encoded text|echo '&amp;' \| html_decode|[HTML::Entities](http://search.cpan.org/dist/HTML-Parser/lib/HTML/Entities.pm)
 libretsv|force LibreOffice to open TSV as a table|libretsv foo.tsv|[LibreOffice](http://www.libreoffice.org/)
 dumbplot|use GNUplot to graph one or two numeric fields in the terminal. removes header if found. assumes should graph points but can graphs lines| cat foo.tsv \| cut -f3,4 \| dumbplot OR cat foo.tsv \| cut -f4 \| dumbplot lines |[gnuplot](http://www.gnuplot.info/download.html)
-uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|cat foo.tsv \| uniqvals \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
+uniqrecs|given a TSV, return a TSV with the frequency of all unique values shown for each field|cat foo.tsv \| uniqrecs \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
+unique|given a single column, return the first appearance of each unique value|cat foo.tsv \| c 1 \| unique |[mawk](http://invisible-island.net/mawk/)
 mkid|given a TSV, returns input with an integer ID field at the front|cat foo.tsv \| mkid
 parallel|make parallel behave like GNU parallel every time|cat foo \| parallel 'echo {}'|[parallel](http://www.gnu.org/software/parallel/)
 c|quick cut for TSV fields|cat foo.tsv \| c 8,9
