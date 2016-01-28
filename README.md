@@ -37,7 +37,7 @@ funky_chars|return the count for each unique non-alpha non-digit character in th
 trim|remove leading and trailing whitespace|cat foo \| trim|
 round|round numeric field to the nearest n digits|cat foo \| round 2|
 sumawk|sum a single numeric field|cat foo.tsv \| tawk '{ print $2 }' \| sumawk|
-uniqrecs|given a TSV, return a TSV with the frequency of all unique values shown for each field|cat foo.tsv \| uniqrecs \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
+uniqvals|given a TSV, return a TSV with the frequency of all unique values shown for each field|cat foo.tsv \| uniqvals \| csvlook -t \| vim - |[mawk](http://invisible-island.net/mawk/)
 unique|given a single column, return the first appearance of each unique value|cat foo.tsv \| c 1 \| unique |[mawk](http://invisible-island.net/mawk/)
 mkid|given a TSV, returns input with an integer ID field at the front|cat foo.tsv \| mkid
 tawk|make awk take in TSV and output TSV|cat foo.tsv \| tawk '{ print $4,$5 }'|[mawk](http://invisible-island.net/mawk/)

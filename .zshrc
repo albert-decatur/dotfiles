@@ -428,7 +428,7 @@ function joinmany_csv {
 	rm $tmpdb $tmpsql
 }
 # get a count of unique entries in every field in a TSV
-function uniqrecs { 
+function uniqvals { 
     intsv=$(cat)
     header=$(echo "$intsv" | head -n 1)
     nfields=$( echo "$header" | tr '\t' '\n' | wc -l )
