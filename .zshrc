@@ -148,6 +148,12 @@ function maybedups {
 # copy stdout to clipboard
 # like Mac's pbcopy
 alias clipboard="xclip -selection clip-board -i"
+# show processes using ports
+# like nethogs but small and simple
+# credit goes to http://www.commandlinefu.com/commands/by/edo
+function netpiglets {
+    lsof -P -i -n | cut -f 1 -d " "| uniq | tail -n +2
+}
 # subset pdf by page number
 # user args: 1) input pdf, 2) hyphen separated page range, 3) output pdf
 # example use pdf_subset in.pdf 1-10 out.pdf
