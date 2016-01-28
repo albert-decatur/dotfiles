@@ -15,7 +15,7 @@ latest|print the name of the most recently modified file in the current director
 listold|list the oldest files over _n_ MB in current directory|listold 100|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 maybedups|prints TSV of *possible* file duplicates of largest _n_ files under current directory. NB: files might *not* be duplicates but it's fast|maybedups 10 \| csvlook -t \| vim -|tawk
 clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge.net/projects/xclip/)
-netpiglets|show processes using ports - like nethogs but smaller!|netpiglets \| xargs pkill|
+netpiglets|show processes using ports - like nethogs but smaller!|netpiglets \| xargs -I '{}' pkill {}|
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 samplekh|get a percent of random records but keep your header line!|cat foo.tsv \| tawk '{print $4,$5}' \| samplekh 3|bit.ly's [data_hacks](https://github.com/bitly/data_hacks)
 sortkh|sort a TSV using UNIX sort options, keeping header in place|cat foo.tsv \| sortkh "-k2 -n"
