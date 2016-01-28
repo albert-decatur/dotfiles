@@ -17,7 +17,7 @@ maybedups|prints TSV of *possible* file duplicates of largest _n_ files under cu
 clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge.net/projects/xclip/)
 pdf_subset|take a page range from a PDF|pdf_subset in.pdf 23-41 out.pdf|[pdftk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
 ngrams|get ngrams of length *n* from a column, treating records as documents| cat foo.tsv \| cut -f3 \| ngrams 2 |
-plotbars|use ggplot make PNG bar graph of a TSV. high res an option!|cat foo.tsv \| tawk '{print $2}' \| sortfreq \| sortkh "-k2 n" \| plotbars year count "title" 20 \| feh - |ggplot2,[Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line)
+plotbars|use ggplot to make PNG bar graph of a TSV. high res an option!|cat foo.tsv \| tawk '{print $2}' \| sortfreq \| sortkh "-k2 n" \| plotbars year count "title" 20 \| feh - |ggplot2,[Rio](https://github.com/jeroenjanssens/data-science-at-the-command-line)
 dumbplot|use GNUplot to graph one or two numeric fields in the terminal. removes header if found. assumes should graph points but can graphs lines. inspired by jeroenjanssens| cat foo.tsv \| cut -f3,4 \| dumbplot OR cat foo.tsv \| cut -f4 \| dumbplot lines |[gnuplot](http://www.gnuplot.info/download.html)
 table2tsv|convert any Gnumeric compatible table to TSV|cat foo.csv \| table2tsv|[Gnumeric](http://www.gnumeric.org/)
 table2csv|convert any CSVKit compatible table to CSV|cat foo.tsv \| table2csv|[csvkit](https://csvkit.readthedocs.org)
