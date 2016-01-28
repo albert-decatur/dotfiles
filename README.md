@@ -46,7 +46,7 @@ cawk|make awk take in CSV and output CSV. NB: you usually want to use csvkit's c
 theader|print numbered TSV header|cat foo.tsv \| theader|
 pheader|print numbered pipe delimited txt header|cat foo.txt \| pheader|
 cheader|print numbered CSV header|cat foo.csv \| cheader|
-awkcols|format a sequence of numbers as awk columns|cols=$(seq 15 1560 \| awkcols ); cat foo.tsv \| tawk "{ print $awkcols}" |
+awkcols|format a sequence of numbers as awk columns|cols=$(seq 15 1560 \| awkcols ); cat foo.tsv \| tawk "{ print $cols}" |
 find_ext|find all files under current directory with a given extension|find_ext csv|
 url_encode|URL encode text|url_encode 'A&P'|[URI::Escape](http://search.cpan.org/dist/URI/URI/Escape.pm)
 url_decode|decode URL encoded text|url_decode 'A%26P'|[URI::Escape](http://search.cpan.org/dist/URI/URI/Escape.pm)
