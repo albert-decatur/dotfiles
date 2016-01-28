@@ -452,6 +452,7 @@ function unique {
 # it also requires that user specified gram length be respected, meaning that partial ngrams will be ignored
 # some quirky stuff - it considers punctuation to be the start of a new term, except for apostrophes which it ignores - this is because of english possessive
 # example use to find trigrams by frequency from the second column of a TSV, ignoring header: ngrams <( cat foo.tsv | tawk '{ print $2 }' | sed '1d' ) 3 | sortfreq
+# TODO: ensure header is not part of ngram
 function rawgrams { 
 	# remove apostrophes because of english possessive
 	tr -d "'" |\

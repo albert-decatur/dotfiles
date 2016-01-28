@@ -29,7 +29,7 @@ joinmany_psql|join an arbitrary number of postgres tables on a given (identicall
 psql_listcols|for a PostgreSQL DB, print a TSV of all table names and their corresponding field names|psql_listcols my_db|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 samplekh|get a percent of random records but keep your header line!|cat foo.tsv \| tawk '{print $4,$5}' \| samplekh 3|bit.ly's [data_hacks](https://github.com/bitly/data_hacks)
 sortkh|sort a TSV using UNIX sort options, keeping header in place|cat foo.tsv \| sortkh "-k2 -n"
-sortfreq|print counts of unique values descending|cat foo.tsv \| tawk '{ print $4 }' \| sortfreq|
+sortfreq|print counts of unique values descending. keeps header in place|cat foo.tsv \| tawk '{ print $4 }' \| sortfreq|
 col_sort|use UNIX sort flags (eg -n or -d) to reorder TSV fields|col_sort -n foo.tsv \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/),[csvkit](https://csvkit.readthedocs.org),table2tsv
 col_extra|print records that have content beyond expected number of fields for delimited text|cat foo.tsv \| col_extra 19|[mawk](http://invisible-island.net/mawk/)
 col_swap|switch the position of two columns in delimited text|cat foo.tsv \| col_swap 3 4 \| sponge foo.tsv|[mawk](http://invisible-island.net/mawk/)
