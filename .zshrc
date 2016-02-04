@@ -658,6 +658,3 @@ function v {
 function lsoctal {
     stat -c '%A %a %n' "$1"
 }
-
-# use tmuxinator
-source ~/bin/tmuxinator.zsh

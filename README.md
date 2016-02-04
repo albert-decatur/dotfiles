@@ -61,6 +61,7 @@ s|quick screen lock|s|[slock](http://tools.suckless.org/slock/)
 p|quick git add, commit, push|p|expects push over SSH
 sr|quick open text web browser, uses surfraw elvi, otherwise assumes search with duckduckgo.com|sr george washington|surfraw
 v|quick open graphical web browser vimb. assumes duckduckgo.com if not given a website|v george washinton|vimb, surfraw
+lsoctal|list file permissions in octal format|lsoctal foo.txt|stat
 
 * ~/.zshrc uses [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).  
 * add a file called ~/.i3/foo.png to get a fullscreen i3wm background using feh, if you change ~/.i3/config
