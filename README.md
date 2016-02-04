@@ -71,3 +71,10 @@ lsoctal|list file permissions in octal format|lsoctal foo.txt|
 ```bash
 sudo rm /usr/bin/sr
 ```
+
+### TODO
+
+* use uniq -d where appropriate
+* use mawk '!x[$0]++' where appropriate
+* use literate-programming
+* use spaces instead of tabs
