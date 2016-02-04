@@ -74,7 +74,13 @@ sudo rm /usr/bin/sr
 
 ### TODO
 
-* use uniq -d where appropriate
-* use mawk '!x[$0]++' where appropriate
+* use uniq -d 
+* use mawk '!x[$0]++'
 * use literate-programming
 * use spaces instead of tabs
+ * can use expand and unexpand
+* consider using LC_ALL=C or LANG=C (eg sort, grep)
+* use sort -s
+* prefer uconv to iconv
+* prefer rsync --delete over rm for speed
+* use timeout to imitate bit.ly's run_for.py
