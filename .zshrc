@@ -654,5 +654,10 @@ function v {
 	    surfraw -browser=/usr/local/bin/vimb duckduckgo "$@"
         fi
 }
+# show permissions in octal format
+function lsoctal {
+    stat -c '%A %a %n' "$1"
+}
+
 # use tmuxinator
 source ~/bin/tmuxinator.zsh
