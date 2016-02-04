@@ -501,7 +501,9 @@ function ngrams {
 	# enforce the user input gram term count - before this the ngrams could be shorter than user specification if the document was too short
 	awk -v gramlength=$1 '{ if ( NF == gramlength ) print $0 }'
 }
-# use bitly's sample.py from data_hacks to get n% of records randomly from STDIN, but keep the first record!
+# use shuf to randomly take _n_ records
+# note that shuf is much faster than sort -R, and that specifying the number of records saves us from running wc each time
+# example: cat foo.txt | samplekh 100
 function samplekh { 
 	# save whole input
 	in=$( cat )
@@ -511,7 +513,7 @@ function samplekh {
 	# remove header before sampling
 	sed '1d' |\
 	# use bitly's data_hacks sample.py! with user arg for prct
-	sample.py $1% 2>/dev/null |\
+	shuf -n $1 |\
 	# slap header back on
 	sed "1 i$header"
 }
