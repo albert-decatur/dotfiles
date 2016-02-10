@@ -84,3 +84,4 @@ sudo rm /usr/bin/sr
 * prefer uconv to iconv
 * prefer rsync --delete over rm for speed
 * use timeout to imitate bit.ly's run_for.py
+* sgrep can be much faster than grep
