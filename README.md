@@ -85,3 +85,4 @@ sudo rm /usr/bin/sr
 * prefer rsync --delete over rm for speed
 * use timeout to imitate bit.ly's run_for.py
 * sgrep can be much faster than grep
+* x2go is actually much faster than ssh -X
