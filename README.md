@@ -76,7 +76,7 @@ sudo rm /usr/bin/sr
 ### TODO
 
 * use uniq -d 
-* use mawk '!x[$0]++'
+* use mawk '!x[$0]++' for faster uniq
 * use literate-programming
 * use spaces instead of tabs
  * can use expand and unexpand
