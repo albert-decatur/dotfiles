@@ -12,6 +12,7 @@ sudo apt-get update && sudo apt-get install $( cat dpkg.md | sed 's:*.*\|#.*::g'
 function|purpose|example|prerequisite
 ---|---|---|---
 latest|print the name of the most recently modified file in the current directory|latest|
+latest-exec|print the path to the most recently modified _n_ executable files under your $PATH. defaults to an _n_ of 1|latest-exec 3|
 listold|list the oldest files over _n_ MB in current directory|listold 100|[parallel](http://www.gnu.org/software/parallel/),[mawk](http://invisible-island.net/mawk/)
 maybedups|prints TSV of *possible* file duplicates of largest _n_ files under current directory. NB: files might *not* be duplicates but it's fast|maybedups 10 \| csvlook -t \| vim -|tawk
 clipboard|pipe text to clipboard|cat foo \| clipboard|[xclip](http://sourceforge.net/projects/xclip/)
