@@ -29,4 +29,4 @@ root: ~/
 
 windows:
   - one: cd ~/Downloads
-  - two: cd ~/Downloads
+  - two: cd ~/sync
