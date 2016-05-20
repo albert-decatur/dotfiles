@@ -664,3 +664,16 @@ function v {
 function lsoctal {
     stat -c '%A %a %n' "$1"
 }
+# given a docker image and container name,
+# makes docker stop container -> rm container -> rm image -> build image ->\
+# run container -> start container -> exec container
+# for example: dockertrial popanthro/2016-05-16 popanthro MYSQL_ROOT_PASSWORD=root
+function dockertrial {
+    image="$1"
+    container="$2"
+    run_env="-e $3"
+    sudo docker stop ${container}; sudo docker rm ${container}; sudo docker rmi "${image}"
+    sudo docker build -t "${image}" .
+    sudo docker run --name ${container} -d ${run_env} "${image}"
+    sudo docker start ${container} ; sudo docker exec -ti ${container} bash
+}
