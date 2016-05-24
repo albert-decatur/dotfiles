@@ -664,17 +664,20 @@ function v {
 function lsoctal {
     stat -c '%A %a %n' "$1"
 }
-# given a docker image and container name,                                                      
-# makes docker stop container -> rm container -> rm image -> build image ->\                    
-# run container -> start container -> exec container                                            
-# for example: dockertrial popanthro/2016-05-16 popanthro MYSQL_ROOT_PASSWORD=root /opt/popanthro:/var/www
-function dockertrial {                                                                          
-    image="$1"                                                                                  
-    container="$2"                                                                              
-    run_env="-e $3"                                                                             
-    volume="$4"                                                                                 
-    sudo docker stop ${container}; sudo docker rm ${container}; sudo docker rmi "${image}"      
-    sudo docker build -t "${image}" .                                                           
-    sudo docker run --name ${container} -d ${run_env} -v ${volume} "${image}"                   
-    sudo docker start ${container} ; sudo docker exec -ti ${container} bash                     
+# given a docker image and container name,
+# makes docker stop container -> rm container -> rm image -> build image ->\
+# run container -> start container -> exec container
+# for example: dockertrial "popanthro/2016-05-16" popanthro MYSQL_ROOT_PASSWORD=root /opt/popanthro:/var/www
+function dockertrial {
+    image="$1"
+    container="$2"
+    # TODO: do not require $run_env and $volume options
+    run_env="$3"
+    volume="$4"
+    sudo docker stop ${container}; sudo docker rm ${container}; sudo docker rmi "${image}"
+    sudo docker build -t "${image}" .
+    # NB: --restart always is used so we can take advantage of services running on system restart
+    # NB: untested
+    sudo docker run --restart always --name ${container} -d -e ${run_env} -v "${volume}" "${image}"
+    sudo docker start ${container} ; sudo docker exec -ti ${container} bash
 }
