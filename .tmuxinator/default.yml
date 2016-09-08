@@ -29,4 +29,5 @@ root: ~/
 
 windows:
   - one: cd ~/Downloads
-  - two: cd ~/sync
+  - two: cd /home/syncthing/
+  - three: cd ~/git
