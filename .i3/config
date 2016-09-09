@@ -153,4 +153,3 @@ bar {
 # set background
 exec --no-startup-id feh --bg-scale ~/.i3/stars3.png
 exec terminator
-exec /home/adecatur/bin/syncthing-linux-arm-v0.12.15/syncthing -no-browser
