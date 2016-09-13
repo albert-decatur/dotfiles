@@ -154,4 +154,3 @@ bar {
 exec --no-startup-id feh --bg-scale ~/.i3/stars3.png
 exec terminator
 exec /home/syncthing/bin/syncthing -no-browser
-exec eval $(keychain --eval battuta-id_rsa)

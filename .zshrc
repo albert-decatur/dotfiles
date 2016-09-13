@@ -681,3 +681,6 @@ function dockertrial {
     sudo docker run --restart always --name ${container} -d -e ${run_env} -v "${volume}" "${image}"
     sudo docker start ${container} ; sudo docker exec -ti ${container} bash
 }
+# for easy ssh with key with passphrase
+# NB: adds slight overhead to each multiplexer window
+eval $(keychain --quiet --eval battuta-id_rsa)
