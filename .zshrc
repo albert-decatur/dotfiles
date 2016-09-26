@@ -689,5 +689,5 @@ eval $(keychain --quiet --eval battuta-id_rsa)
 # example: mysql_listcols myuser mydb |csvlook -t | less -S
 # NB: expects user pass in ~/.my.cnf
 function mysql_listcols {
-    echo "show tables;" | mysql -N -u $1 $2 | parallel --gnu 'cols=$(echo "select * from information_schema.columns where table_name=\"{}\""|mysql -u '$1' '$2'); width=$(echo "$cols"| head -n 1 | wc -m); echo "$cols\n----------------------------------------------"'
+    echo "show tables;" | mysql -N -u $1 $2 | parallel --gnu 'cols=$(echo "select * from information_schema.columns where table_name=\"{}\""|mysql -u '$1' '$2'); echo "$cols\n----------------------------------------------"'
 }
