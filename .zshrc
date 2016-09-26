@@ -684,3 +684,10 @@ function dockertrial {
 # for easy ssh with key with passphrase
 # NB: adds slight overhead to each multiplexer window
 eval $(keychain --quiet --eval battuta-id_rsa)
+
+# list info about mysql tables and columns
+# example: mysql_listcols myuser mydb |csvlook -t | less -S
+# NB: expects user pass in ~/.my.cnf
+function mysql_listcols {
+    echo "show tables;" | mysql -N -u $1 $2 | parallel --gnu 'cols=$(echo "select * from information_schema.columns where table_name=\"{}\""|mysql -u '$1' '$2'); width=$(echo "$cols"| head -n 1 | wc -m); echo "$cols\n----------------------------------------------"'
+}
