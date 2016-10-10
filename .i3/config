@@ -24,7 +24,8 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec st
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -152,5 +153,6 @@ bar {
 ###########
 # set background
 exec --no-startup-id feh --bg-scale ~/.i3/stars3.png
-exec terminator
-exec /home/syncthing/bin/syncthing -no-browser
+exec st
+#exec terminator
+#exec /home/syncthing/bin/syncthing -no-browser
