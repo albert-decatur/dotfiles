@@ -626,6 +626,7 @@ function c {
 }
 # quick access to keepass2 via cli
 # NB: assumes folder ~/sync - used by syncthing
+# NB: you should change this to the path to your keepass2 db
 function k {
 	kpcli --kdb ~/sync/Database.kdbx
 }
@@ -683,11 +684,63 @@ function dockertrial {
 }
 # for easy ssh with key with passphrase
 # NB: adds slight overhead to each multiplexer window
+# NB: you should change the key name to be relevant for you
 eval $(keychain --quiet --eval battuta-id_rsa)
 
 # list info about mysql tables and columns
 # example: mysql_listcols myuser mydb |csvlook -t | less -S
 # NB: expects user pass in ~/.my.cnf
+# NB: table divider of a ton of hyphens is extremely sloppy
 function mysql_listcols {
     echo "show tables;" | mysql -N -u $1 $2 | parallel --gnu 'cols=$(echo "select * from information_schema.columns where table_name=\"{}\""|mysql -u '$1' '$2'); echo "$cols\n----------------------------------------------"'
+}
+
+# connect to VMs easily with functions!
+# expects a server running sshd and Windows and Linux VirtualBox VMs 
+
+# what these do _not_ do:
+# 1. handle x2goclient
+# 2. handle Windows RDP client
+# 3. automatically detect protocol and port of VM given VM name (can do this later with a table that could be in a shared git repo)
+# NB: user 'virtual' is hard coded as host user belonging to group vboxusers and owner of '~/VirtualBox\ VMs'
+
+### the functions...
+###|-----------------+----------------------------------------------------+----------------------------|
+###|  function       | purpose                                            | example use                |
+###|-----------------+----------------------------------------------------+----------------------------|
+###|  vm-list        | list all VMs                                       | vm-list                    |
+###|  vm-listrunning | list only running VMs                              | vm-listrunning             |
+###|  vm-start       | start the named VM                                 | vm-start w10-production01  |
+###|  vm-stop        | stop the named VM                                  | vm-stop w10-production01   |
+###|  vm-ssh         | SSH to the named VM given username and port number | vm-ssh myUser 2203         |
+###|  vm-rdp         | RDP to the named VM given username and port number | vm-rdp myUser 3389         |
+###|-----------------+----------------------------------------------------+----------------------------|
+
+function vm-list {
+	ssh virtual@EXAMPLE_HOST.org VBoxManage list vms
+}
+function vm-listrunning {
+	ssh virtual@EXAMPLE_HOST.org VBoxManage list runningvms
+}
+# example use: vm-start w10-production01
+function vm-start {
+	ssh virtual@EXAMPLE_HOST.org VBoxManage startvm "$1" --type headless &
+}
+# example use: vm-stop w10-production01
+function vm-stop {
+	ssh virtual@EXAMPLE_HOST.org VBoxManage controlvm "$1" acpipowerbutton
+}
+# example use: vm-ssh myUser 2203
+function vm-ssh {
+	ssh -X -p "$2" "$1"@EXAMPLE_HOST.org 
+}
+# example use: vm-rdp myUser 3389
+# if no port is given assume 3389
+# Note: you should fill in the password to your own Windows VM
+function vm-rdp {
+	if [[ -n "$2" ]]; then
+		2=3389
+	fi
+	ssh -N -L "$2":localhost:"$2" virtual@EXAMPLE_HOST.org &
+	xfreerdp -u "$1" -p 'EXAMPLE_PASSWORD' -x l -z --plugin rdpsnd --data alsa -- localhost -v
 }
