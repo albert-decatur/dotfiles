@@ -744,3 +744,7 @@ function vm-rdp {
 	ssh -N -L "$2":localhost:"$2" virtual@EXAMPLE_HOST.org &
 	xfreerdp -u "$1" -p 'EXAMPLE_PASSWORD' -x l -z --plugin rdpsnd --data alsa -- localhost -v
 }
+
+# pretty print TSVs and preview them with the pager less
+# NB: alias replaces csvlook altogether so I hope you did not want to look at actual CSVs
+alias csvlook="csvlook -t | less -S"
