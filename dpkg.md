@@ -64,7 +64,7 @@ pdftk # edit PDFs
 poppler-utils # edit PDFs  
 redis-server # key-value db  
 redis-tools # key-value db  
-postgresql-9.3-postgis-2.1 # relational db, with GIS functions  
+postgresql-9.5-postgis-2.2 # relational db, with GIS functions  
 sqlite3 # relational db  
 spatialite-bin # GIS for SQLite  
 gnuplot # nice for quick plotting in terminal  
@@ -90,7 +90,7 @@ tmux # terminal multiplexer - more terminals!!
 detox # automatically fix bad file/directory names  
 xclip # pipe to clipboard! or maybe you like [xsel](https://github.com/kfish/xsel)  
 htop # monitor system processes  
-slock # simple screen locker  
+suckless-tools # includes slock, simple screen locker  
 mupdf # pdf viewer - might want evince instead  
 mutt # email client. [alpine](https://en.wikipedia.org/wiki/Alpine_(email_client)) is a lot simpler  
 getmail4 # backup email in maildir  
