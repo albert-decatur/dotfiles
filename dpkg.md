@@ -36,7 +36,7 @@ nethogs # which processes are using the network most?
 iperf3 # network throughput test between two boxes you control  
 mtr # trace / ping combo  
 tor-arm # monitor traffic on a tor node  
-atsar # silently collects system stats. or if you're super cool use collectd with statsd plugin  
+#atsar # silently collects system stats. or if you're super cool use collectd with statsd plugin  
 vnstat # silently collects network traffic stats  
   
 ### fun! and multimedia  
@@ -44,7 +44,7 @@ imagemagick # image editing tool. or if you like forks use graphicsmagick
 gifsicle  
 libav-tools # video editing  
 feh # view images.  
-canto # CLI for feeds  
+#canto # CLI for feeds  
 mpv # mplayer fork: watch videos, listen to music. or use vlc  
 moc # music library in the command line  
 scrot # take screenshots. I know - gross name  
