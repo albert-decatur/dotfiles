@@ -76,14 +76,8 @@ sudo rm /usr/bin/sr
 ### TODO
 
 * use uniq -d 
-* use mawk '!x[$0]++' for faster uniq
 * use literate-programming
-* use spaces instead of tabs
- * can use expand and unexpand
 * consider using LC_ALL=C or LANG=C (eg sort, grep)
 * use sort -s
 * prefer uconv to iconv
-* prefer rsync --delete over rm for speed
-* use timeout to imitate bit.ly's run_for.py
 * sgrep can be much faster than grep
-* x2go is actually much faster than ssh -X

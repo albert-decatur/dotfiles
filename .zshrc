@@ -748,3 +748,12 @@ function vm-rdp {
 # pretty print TSVs and preview them with the pager less
 # NB: alias replaces csvlook altogether so I hope you did not want to look at actual CSVs
 alias csvlook="csvlook -t | less -S"
+
+# temporary ID field of incremental integes
+# useful for postgres outer joins so can order by this field and then paste
+function mkincid {
+	in=$(cat)
+	c=$(echo "$in"| wc -l); c=$(($c-1))
+	tmp_inc_ids=$(seq 1 $c|sed '1itmp_inc_ids')
+	paste <(echo "$tmp_inc_ids") <(echo "$in")
+}
