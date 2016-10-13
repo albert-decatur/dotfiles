@@ -118,9 +118,10 @@ pkg-config
 ascii # ASCII lookup table  
   
   
-### these won't install using the README command but they're cool  
+### these will not install using the README command but they are cool  
  python-numpy # code depending on numpy install often has trouble installing numpy itself  
  i3 # tiled window manager  
  kpcli # keepass CLI  # and libreadline-dev for cpan Term::ReadLine::Gnu  
  libwebkit-dev # compiling browsers from source often needs this  
- moreutils # sponge is super convenient. however, it will mess with your GNU parallel install because it also has a command named 'parallel'  
+ moreutils # sponge is super convenient. however, it will mess with your GNU parallel install because it also has a command named "parallel"  
+ keychain # enter SSH passphrase once, use many times eg in terminal multiplexer 
