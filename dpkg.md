@@ -20,6 +20,7 @@ rsync # mmmm remote delta copy. try it with inotify!
 curl # do anything over any protocol (not quite but nearly)  
 wget  
 lftp  
+# sftp # as a best pratice, use this instead of scp. it will already be installed
 rtorrent  
   
 ### check disk use  
@@ -35,22 +36,22 @@ iftop # monitor network traffic live
 nethogs # which processes are using the network most?  
 iperf3 # network throughput test between two boxes you control  
 mtr # trace / ping combo  
-tor-arm # monitor traffic on a tor node  
-#atsar # silently collects system stats. or if you're super cool use collectd with statsd plugin  
+#tor-arm # monitor traffic on a tor node  
+#atsar # silently collects system stats. or if you are super cool use collectd with statsd plugin  
 vnstat # silently collects network traffic stats  
   
 ### fun! and multimedia  
-imagemagick # image editing tool. or if you like forks use graphicsmagick  
-gifsicle  
-libav-tools # video editing  
+#imagemagick # image editing tool. or if you like forks use graphicsmagick  
+#gifsicle  
+#libav-tools # video editing  
 feh # view images.  
 #canto # CLI for feeds  
-mpv # mplayer fork: watch videos, listen to music. or use vlc  
-moc # music library in the command line  
-scrot # take screenshots. I know - gross name  
+#mpv # mplayer fork: watch videos, listen to music. or use vlc  
+#moc # music library in the command line  
+#scrot # take screenshots. I know - gross name  
 mtpaint # crazy simple GUI image editor  
-cmatrix # dumb and fun  
-ninvaders # fun but not dumb  
+#cmatrix # dumb and fun  
+#ninvaders # fun but not dumb  
   
 ### command line web browsers  
 w3m # maybe you prefer the browser "links"  
@@ -60,10 +61,11 @@ surfraw # better than a browser
 ### data science / text munging  
 mawk # fast awk  
 jq # parse JSON fast  
+python3-csvkit # use CVSs the Unix way with pipes 
 pdftk # edit PDFs  
 poppler-utils # edit PDFs  
-redis-server # key-value db  
-redis-tools # key-value db  
+#redis-server # key-value db  
+#redis-tools # key-value db  
 postgresql-9.5-postgis-2.2 # relational db, with GIS functions  
 sqlite3 # relational db  
 spatialite-bin # GIS for SQLite  
@@ -71,7 +73,7 @@ gnuplot # nice for quick plotting in terminal
 xmlstarlet # parse XML  
 xsltproc # use XSLT. so convenient  
 gnumeric # spreadsheet program great for converter "ssconvert"  
-raptor-utils # turtle parsing.  you heard me. it's an RDF thing  
+raptor-utils # turtle parsing.  you heard me. it is an RDF thing  
 antiword # msoffice -> text  
 odt2txt # openoffice -> text  
 html2text # just simple  
