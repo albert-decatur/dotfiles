@@ -1,0 +1,8 @@
+# this is only useful if the following is run
+# git config --global core.excludesfile ~/.gitignore_global
+
+# for vim
+*.swp
+*.swo
+# for libreoffice
+*.~lock*
