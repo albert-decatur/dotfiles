@@ -75,6 +75,7 @@ sudo rm /usr/bin/sr
 
 ### TODO
 
+* join arbitrary number of tables on same combination of columns, not just a single column
 * use uniq -d 
 * use literate-programming
 * consider using LC_ALL=C or LANG=C (eg sort, grep)
