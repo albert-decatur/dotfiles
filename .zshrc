@@ -749,11 +749,15 @@ function vm-rdp {
 # NB: alias replaces csvlook altogether so I hope you did not want to look at actual CSVs
 alias csvlook="csvlook -t | less -S"
 
-# temporary ID field of incremental integes
-# useful for postgres outer joins so can order by this field and then paste
-function mkincid {
+# makes new leading field by concatenating arbitrary existing fields according to cut syntax
+# NB: assumes TSV input and output, like "cut" orders fields numerically regardless of user input, eg "1-3,8" is same as "8,1-3"
+# example use: cat foo.tsv | mkid_concat "1-3,8"
+function mkid_concat { 
 	in=$(cat)
-	c=$(echo "$in"| wc -l); c=$(($c-1))
-	tmp_inc_ids=$(seq 1 $c|sed '1itmp_inc_ids')
-	paste <(echo "$tmp_inc_ids") <(echo "$in")
+	concat_field=$(
+		echo "$in" |\
+		cut -f "$1" |\
+		sed 's:\t:_:g' 
+	)
+	paste <(echo "$concat_field") <(echo "$in")
 }
