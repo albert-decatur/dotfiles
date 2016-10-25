@@ -46,7 +46,7 @@ vnstat # silently collects network traffic stats
 #libav-tools # video editing  
 feh # view images.  
 #canto # CLI for feeds  
-#mpv # mplayer fork: watch videos, listen to music. or use vlc  
+# avconv # for avplay, extremely lightweight video player, and also editing that replaces ffmpeg
 #moc # music library in the command line  
 #scrot # take screenshots. I know - gross name  
 mtpaint # crazy simple GUI image editor  
