@@ -761,3 +761,16 @@ function mkid_concat {
 	)
 	paste <(echo "$concat_field") <(echo "$in")
 }
+# NB: do not use!
+# TODO replace shuf as number generator
+# no clue if shuf is at all secure
+# example use: diceware 9 /path/to/diceware.wordlist.asc
+function diceware { 
+	diceware=$(cat "$2" | nl | trim )
+	for i in $(seq 1 "$1")
+	do 
+		grep -Ef <(shuf -i 1-7776 -n 1 | sed 's:^:^:g;s:$:\t:g' ) <(echo "$diceware") |\
+		c 3 |\
+		tr '\n' ' '
+	done | sed 's:\s$::g'
+} 
