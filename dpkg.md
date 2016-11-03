@@ -1,5 +1,5 @@
-# great packages available in apt  
-#### tested on Ubuntu 14.04  
+# great packages available in apt repos 
+#### tested on Ubuntu 16.04  
   
 * these tools focus on simplicity and low overhead  
  * command line for the win  
@@ -16,15 +16,14 @@ python-pip
   
 ### get files  
 axel # download faster. try 'axel -n 20 example.com/bigFile'. for real  
-rsync # mmmm remote delta copy. try it with inotify!  
+rsync # remote delta copy. try it with inotify!  
 curl # do anything over any protocol (not quite but nearly)  
 wget  
-lftp  
-# sftp # as a best pratice, use this instead of scp. it will already be installed
+lftp # great for conditional batch downloads from FTP  
 rtorrent  
   
 ### check disk use  
-gt5 # seriously.  give it a try. or maybe you prefer ncdu  
+gt5 # browse HTML of your disk use. great for finding big old files to delete. or maybe you prefer ncdu  
   
 ### network  
 ufw # easy firewall  
@@ -52,6 +51,7 @@ feh # view images.
 mtpaint # crazy simple GUI image editor  
 #cmatrix # dumb and fun  
 #ninvaders # fun but not dumb  
+#flpsed # a WYSIWYG PDF and postscript editor 
   
 ### command line web browsers  
 w3m # maybe you prefer the browser "links"  
