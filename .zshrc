@@ -579,6 +579,7 @@ function tsv2redis {
 }
 # sort TSV fields using UNIX sort options in double quotes - keeps header!
 # example sorting by field 2: cat foo.tsv | sortkh "-k2 -rn"
+# may require single argument worth of sort flags, eg -rnk3,3
 function sortkh { 
 	in=$(cat)
 	header=$(echo "$in" | head -n 1)
