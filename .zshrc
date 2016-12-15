@@ -313,32 +313,25 @@ function dumbplot {
 # use double quoted list for table names
 # example use: joinmany_psql "1 2 3 4" example_id_field "full outer join" foo_db
 function joinmany_psql { 
-	field=$2
-	tables=( $1 )
-	# for the benefit of joinmany_tsv, strip text after a period - hope table names don't have periods!
-	tables=$( echo "${tables[@]}" | tr ' ' '\n' | sed 's:[.][^.]*$::g' )
-	tables=($tables)
-	# get the number of tables to join
-	num_elements=$( expr ${#tables[@]} - 1 )
+joinmany_psql () {
+	emulate -L ksh
+	field=$2 
+	tables=($(echo "$1")) 
+	num_elements=$( expr ${#tables[@]} - 1) 
 	for n in $(seq 0 $num_elements)
-	do 
-		# if the number of tables is reached, do nothing
-		if [[ $n -eq $num_elements ]]; then 
+	do
+		if [[ $n -eq $num_elements ]]
+		then
 			false
-		# if the number of tables is not reached, join the current table to the next table using the user specified join type
-		elif [[ $n -eq 0 ]]; then 
+		elif [[ $n -eq 0 ]]
+		then
 			echo "\"${tables[$n]}\" $3 \"${tables[$( expr $n + 1 )]}\" USING (\"$2\")"
 			unset tables[$n]
-		else 
+		else
 			echo "$3 \"${tables[$( expr $n + 1 )]}\" USING (\"$2\")"
 			unset tables[$n]
 		fi
-	done |\
-	tr '\n' ' ' |\
-	# surround the join SQL with SQL for copying to stdout as tsv
-	sed "s:^:SELECT * FROM :g" |\
-	sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g" |\
- 	psql $4
+	done | tr '\n' ' ' | sed "s:^:SELECT * FROM :g" | sed "s:^:COPY (:g;s:$:) TO STDOUT WITH DELIMITER E'\t' CSV HEADER:g"
 }
 # join arbitrary number of TSVs or CSVs
 # first imports to psql with txt2pgsql.pl, then uses function joinmany_psql
